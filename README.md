@@ -58,6 +58,8 @@
 | **Log Write Path** | Where this PC writes its logs | `C:\StreamLogs\` |
 | **Log Read Path** | Where to read other PC's logs | `\\OtherPC\SharedLogs\` |
 
+<img width="1577" height="1193" alt="image" src="https://github.com/user-attachments/assets/fe9004f0-54ee-4adf-a531-efcc5e1c694c" />
+
 ### Optional Settings
 
 | Setting | Default | Description |
@@ -89,6 +91,8 @@ For cross-device streaming setups:
 └── SecondaryPC.jsonl # Written by secondary PC
 ```
 
+<img width="1077" height="513" alt="image" src="https://github.com/user-attachments/assets/08cfe469-ca60-4800-a576-e5ca3c0454e0" />
+
 ## API Quota Management
 
 The script includes built-in protection against YouTube API quota exhaustion:
@@ -111,6 +115,8 @@ Stream data is logged in JSON Lines format:
 }
 ```
 
+<img width="2790" height="1827" alt="image" src="https://github.com/user-attachments/assets/80d1c43a-df9e-4a4d-a663-309a9d1b0197" />
+
 ## Troubleshooting
 
 ### Common Issues
@@ -130,12 +136,14 @@ Stream data is logged in JSON Lines format:
 - Reduce monitor interval if needed
 - Check for other applications using the same API key
 
+<img width="1659" height="513" alt="image" src="https://github.com/user-attachments/assets/4abaadb8-e085-4fb8-8ecc-6ba52437e20b" />
+
 ### Debug Tips
 
 1. Check OBS Script Log for detailed timestamps
 2. Verify file permissions for log directories
 3. Test API key with Google's API Explorer
-4. Ensure network connectivity between PCs
+4. Ensure network connectivity (VerySync) between PCs
 
 ## Requirements
 
