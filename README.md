@@ -2,9 +2,7 @@
 
 🔄 Automated YouTube Live Chat URL management and cross-device stream link sharing for OBS Studio.
 
-**Usage**:
- - *[BiliBili](https://www.bilibili.com/video/BV1xqtrzjEHV)*
- - *[YouTube](https://youtu.be/XyUmUvaArpQ?si=nYd0TS-n8Fj00zj_)*
+**Usage**: *[BiliBili](https://www.bilibili.com/video/BV1xqtrzjEHV)*, *[YouTube](https://youtu.be/XyUmUvaArpQ?si=nYd0TS-n8Fj00zj_)*
 
 **Other wonderful OBS stuff**:
  - *[youtube-live-chat-overlay](https://github.com/EuSouGuil/youtube-live-chat-overlay)*
