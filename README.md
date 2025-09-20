@@ -2,7 +2,9 @@
 
 🔄 Automated YouTube Live Chat URL management and cross-device stream link sharing for OBS Studio.
 
-1. **Usage**: *[BiliBili](https://www.bilibili.com/video/BV1xqtrzjEHV)* or *[YouTube](https://youtu.be/XyUmUvaArpQ?si=nYd0TS-n8Fj00zj_)*
+1. **Usage**:
+   - *[Tutorial 1](https://youtu.be/xXMUXBz1P74)*, *[Tutorial 2](https://youtu.be/XyUmUvaArpQ)*
+   - *[Quicker 1](https://getquicker.net/Sharedaction?code=61157382-208a-4708-33a6-08ddf80356fe)*, *[Quicker 2](https://getquicker.net/Sharedaction?code=54d4f5ea-45ff-4928-33a9-08ddf80356fe)*
 2. **My everyday Dual-Channel live-streaming setup**:
    - *[@xczphysics](https://www.youtube.com/@xczphysics/streams)*
    - *[@尘竹-3-梦瑶](https://www.youtube.com/@尘竹-3-梦瑶/streams)*
