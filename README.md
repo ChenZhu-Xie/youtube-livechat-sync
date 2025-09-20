@@ -2,16 +2,13 @@
 
 🔄 Automated YouTube Live Chat URL management and cross-device stream link sharing for OBS Studio.
 
-**Usage**: *[BiliBili](https://www.bilibili.com/video/BV1xqtrzjEHV)*, *[YouTube](https://youtu.be/XyUmUvaArpQ?si=nYd0TS-n8Fj00zj_)*
-
-**My everyday dual-accounts live-streaming**: , *[@xczphysics](https://www.youtube.com/@xczphysics/streams)*, *[@%E5%B0%98%E7%AB%B9-3-%E6%A2%A6%E7%91%B6](https://www.youtube.com/@%E5%B0%98%E7%AB%B9-3-%E6%A2%A6%E7%91%B6/streams)*
-
-**Other wonderful OBS stuff**:
- - *[youtube-live-chat-overlay](https://github.com/EuSouGuil/youtube-live-chat-overlay)*
-
-**Products that functions similarly to mine**:
- - *[youtube-chat-browser-source-updater](https://github.com/jimpalompa/OBS-Studio-Plugins-Scripts-Themes)*
- - *[Twidget](https://youtu.be/GjlEzcKAVCI?si=PoIndk-xf2tETBG6)*
+1. **Usage**: *[BiliBili](https://www.bilibili.com/video/BV1xqtrzjEHV)*, *[YouTube](https://youtu.be/XyUmUvaArpQ?si=nYd0TS-n8Fj00zj_)*
+2. **My everyday dual-accounts live-streaming**: , *[@xczphysics](https://www.youtube.com/@xczphysics/streams)*, *[@尘竹-3-梦瑶](https://www.youtube.com/@尘竹-3-梦瑶/streams)*
+3. **Other wonderful OBS stuff**:
+   - *[youtube-live-chat-overlay](https://github.com/EuSouGuil/youtube-live-chat-overlay)*
+4. **Products that functions similarly to mine**:
+   - *[youtube-chat-browser-source-updater](https://github.com/jimpalompa/OBS-Studio-Plugins-Scripts-Themes)*
+   - *[Twidget](https://youtu.be/GjlEzcKAVCI?si=PoIndk-xf2tETBG6)*
 
 ## Table of Contents
 
