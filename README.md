@@ -37,7 +37,7 @@
 ## Features
 
 - **🚀 Automatic Chat URL Updates**: Automatically fetches and updates YouTube Live Chat URLs in your OBS Browser Source when streaming starts
-- **🔗 Cross-Device Stream Sharing**: Share live stream links between multiple computers automatically
+- **🔗 Cross-Device Stream Sharing**: Share live stream links between multiple computers automatically (with [verysync](https://www.verysync.com/))
 - **⚡ Real-time Monitoring**: Monitors and corrects manually modified browser source URLs
 - **🛡️ API Quota Protection**: Built-in rate limiting and exponential backoff to protect YouTube API quota
 - **📝 JSON Logging**: Structured logging system for stream data [synchronization](https://www.verysync.com/)
