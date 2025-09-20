@@ -8,6 +8,8 @@
 
 *Other wonderful OBS stuff*:
  - *youtube-live-chat-overlay*: https://github.com/EuSouGuil/youtube-live-chat-overlay
+*Products that functions similarly to mine*:
+ - *youtube-chat-browser-source-updater*: https://github.com/jimpalompa/OBS-Studio-Plugins-Scripts-Themes
  - *Twidget*: https://youtu.be/GjlEzcKAVCI?si=PoIndk-xf2tETBG6
 
 ## Table of Contents
