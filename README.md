@@ -58,7 +58,8 @@
 | **Log Write Path** | Where this PC writes its logs | `C:\StreamLogs\` |
 | **Log Read Path** | Where to read other PC's logs | `\\OtherPC\SharedLogs\` |
 
-<img width="1577" height="1193" alt="image" src="https://github.com/user-attachments/assets/fe9004f0-54ee-4adf-a531-efcc5e1c694c" />
+<img width="1557" height="1182" alt="image" src="https://github.com/user-attachments/assets/8999367c-9581-4f27-b81f-82b887218936" />
+<img width="1547" height="212" alt="image" src="https://github.com/user-attachments/assets/bf3fbfb8-8e2e-4ef3-b6b3-6cf40250bbce" />
 
 ### Optional Settings
 
@@ -115,7 +116,7 @@ Stream data is logged in JSON Lines format:
 }
 ```
 
-<img width="2790" height="1827" alt="image" src="https://github.com/user-attachments/assets/80d1c43a-df9e-4a4d-a663-309a9d1b0197" />
+<img width="2766" height="1812" alt="image" src="https://github.com/user-attachments/assets/8d5c3927-4262-4122-98d0-8af744f4dbe3" />
 
 ## Troubleshooting
 
