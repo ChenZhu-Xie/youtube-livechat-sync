@@ -13,11 +13,264 @@
 	[
 		{
 			"file": "README.md",
+			"redo_stack":
+			[
+				[
+					148,
+					1,
+					"insert",
+					{
+						"characters": "."
+					},
+					"AQAAAKoRAAAAAAAAqhEAAAAAAAABAAAALg",
+					"AQAAAAAAAAABAAAAqxEAAAAAAACrEQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					143,
+					1,
+					"left_delete",
+					null,
+					"AQAAAKoRAAAAAAAA4hEAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAqhEAAAAAAACqEQAAAAAAAAAAAAAAAPC/"
+				]
+			],
 			"settings":
 			{
-				"buffer_size": 0,
+				"buffer_size": 4783,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
-			}
+			},
+			"undo_stack":
+			[
+				[
+					5,
+					1,
+					"paste",
+					null,
+					"AQAAAAAAAAAAAAAAiQoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					11,
+					1,
+					"insert",
+					{
+						"characters": "\n\n"
+					},
+					"AgAAAIkKAAAAAAAAigoAAAAAAAAAAAAAigoAAAAAAACLCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAiQoAAAAAAACJCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					12,
+					1,
+					"paste",
+					null,
+					"AQAAAIsKAAAAAAAABwsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAiwoAAAAAAACLCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					15,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAKMKAAAAAAAApAoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAowoAAAAAAACjCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					21,
+					1,
+					"insert",
+					{
+						"characters": "\n\n"
+					},
+					"AgAAAAgLAAAAAAAACQsAAAAAAAAAAAAACQsAAAAAAAAKCwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAACAsAAAAAAAAICwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					22,
+					1,
+					"paste",
+					null,
+					"AQAAAAoLAAAAAAAAjgwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAACgsAAAAAAAAKCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					28,
+					1,
+					"insert",
+					{
+						"characters": "\n\n"
+					},
+					"AgAAAI4MAAAAAAAAjwwAAAAAAAAAAAAAjwwAAAAAAACQDAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAjgwAAAAAAACODAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					29,
+					1,
+					"insert_snippet",
+					{
+						"contents": "`$0`"
+					},
+					"AQAAAJAMAAAAAAAAkgwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAkAwAAAAAAACQDAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					31,
+					1,
+					"insert",
+					{
+						"characters": "`json"
+					},
+					"BQAAAJIMAAAAAAAAkwwAAAAAAAAAAAAAkwwAAAAAAACUDAAAAAAAAAAAAACUDAAAAAAAAJUMAAAAAAAAAAAAAJUMAAAAAAAAlgwAAAAAAAAAAAAAlgwAAAAAAACXDAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAkgwAAAAAAACSDAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					32,
+					1,
+					"insert_completion",
+					{
+						"completion": "jsonl",
+						"format": "text",
+						"keep_prefix": false,
+						"must_insert": false,
+						"trigger": "jsonl"
+					},
+					"AgAAAJMMAAAAAAAAkwwAAAAAAAAEAAAAanNvbpMMAAAAAAAAmAwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAlwwAAAAAAACXDAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					33,
+					1,
+					"left_delete",
+					null,
+					"AQAAAJcMAAAAAAAAlwwAAAAAAAABAAAAbA",
+					"AQAAAAAAAAABAAAAmAwAAAAAAACYDAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					34,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAJcMAAAAAAAAmAwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAlwwAAAAAAACXDAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					35,
+					1,
+					"paste",
+					null,
+					"AQAAAJgMAAAAAAAAng0AAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAmAwAAAAAAACYDAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					36,
+					1,
+					"insert",
+					{
+						"characters": "\n```"
+					},
+					"BAAAAJ4NAAAAAAAAnw0AAAAAAAAAAAAAnw0AAAAAAACgDQAAAAAAAAAAAACgDQAAAAAAAKENAAAAAAAAAAAAAKENAAAAAAAAog0AAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAng0AAAAAAACeDQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					39,
+					1,
+					"left_delete",
+					null,
+					"AQAAAI4MAAAAAAAAjgwAAAAAAAABAAAACg",
+					"AQAAAAAAAAABAAAAjwwAAAAAAACPDAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					45,
+					1,
+					"insert",
+					{
+						"characters": "\n\n"
+					},
+					"AgAAAKENAAAAAAAAog0AAAAAAAAAAAAAog0AAAAAAACjDQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAoQ0AAAAAAAChDQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					46,
+					1,
+					"paste",
+					null,
+					"AQAAAKMNAAAAAAAApBIAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAow0AAAAAAACjDQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					88,
+					1,
+					"insert_snippet",
+					{
+						"contents": "`$0`"
+					},
+					"AQAAAIoKAAAAAAAAjAoAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAigoAAAAAAACKCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					89,
+					1,
+					"insert",
+					{
+						"characters": "``"
+					},
+					"AgAAAIsKAAAAAAAAjAoAAAAAAAAAAAAAjAoAAAAAAACNCgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAiwoAAAAAAACLCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					90,
+					1,
+					"left_delete",
+					null,
+					"AQAAAIwKAAAAAAAAjAoAAAAAAAABAAAAYA",
+					"AQAAAAAAAAABAAAAjQoAAAAAAACNCgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					95,
+					1,
+					"insert",
+					{
+						"characters": "```"
+					},
+					"AwAAAAwLAAAAAAAADQsAAAAAAAAAAAAADQsAAAAAAAAOCwAAAAAAAAAAAAAOCwAAAAAAAA8LAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAADAsAAAAAAAAMCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					102,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAA8LAAAAAAAAEAsAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAADwsAAAAAAAAPCwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					116,
+					1,
+					"insert",
+					{
+						"characters": "GPLv3"
+					},
+					"BgAAAJsRAAAAAAAAnBEAAAAAAAAAAAAAnBEAAAAAAACcEQAAAAAAAAMAAABNSVScEQAAAAAAAJ0RAAAAAAAAAAAAAJ0RAAAAAAAAnhEAAAAAAAAAAAAAnhEAAAAAAACfEQAAAAAAAAAAAACfEQAAAAAAAKARAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAmxEAAAAAAACeEQAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					125,
+					1,
+					"insert",
+					{
+						"characters": ".0"
+					},
+					"AgAAAKARAAAAAAAAoREAAAAAAAAAAAAAoREAAAAAAACiEQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAoBEAAAAAAACgEQAAAAAAAAAAAAAAAPC/"
+				]
+			]
 		}
 	],
 	"build_system": "",
@@ -494,7 +747,7 @@
 	],
 	"find":
 	{
-		"height": 42.0
+		"height": 54.0
 	},
 	"find_in_files":
 	{
@@ -533,18 +786,18 @@
 					"buffer": 0,
 					"file": "README.md",
 					"selected": true,
-					"semi_transient": true,
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 0,
+						"buffer_size": 4783,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								2779,
+								2779
 							]
 						],
 						"settings":
@@ -552,7 +805,7 @@
 							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1456.66666667,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,

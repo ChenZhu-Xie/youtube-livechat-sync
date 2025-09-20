@@ -2,6 +2,26 @@
 
 🔄 Automated YouTube Live Chat URL management and cross-device stream link sharing for OBS Studio.
 
+## Table of Contents
+
+- [Features](#features)
+- [How It Works](#how-it-works)
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [Required Settings](#required-settings)
+  - [Optional Settings](#optional-settings)
+- [YouTube API Setup](#youtube-api-setup)
+- [Multi-PC Setup](#multi-pc-setup)
+- [API Quota Management](#api-quota-management)
+- [Log Format](#log-format)
+- [Troubleshooting](#troubleshooting)
+  - [Common Issues](#common-issues)
+  - [Debug Tips](#debug-tips)
+- [Requirements](#requirements)
+- [Contributing](#contributing)
+- [License](#license)
+- [Disclaimer](#disclaimer)
+
 ## Features
 
 - **🚀 Automatic Chat URL Updates**: Automatically fetches and updates YouTube Live Chat URLs in your OBS Browser Source when streaming starts
@@ -63,10 +83,11 @@ For cross-device streaming setups:
 3. Both PCs will automatically sync stream links
 
 ### Example File Structure
-
+```
 \SharedFolder\StreamLogs
 ├── MainPC.jsonl      # Written by main streaming PC
 └── SecondaryPC.jsonl # Written by secondary PC
+```
 
 ## API Quota Management
 
@@ -129,7 +150,7 @@ Contributions welcome! Please feel free to submit issues, feature requests, or p
 
 ## License
 
-MIT License - feel free to use and modify for your streaming needs.
+GPLv3.0 License - feel free to use and modify for your streaming needs.
 
 ## Disclaimer
 
