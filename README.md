@@ -37,14 +37,14 @@
 - **🔗 Cross-Device Stream Sharing**: Share live stream links between multiple computers automatically
 - **⚡ Real-time Monitoring**: Monitors and corrects manually modified browser source URLs
 - **🛡️ API Quota Protection**: Built-in rate limiting and exponential backoff to protect YouTube API quota
-- **📝 JSON Logging**: Structured logging system for stream data synchronization
+- **📝 JSON Logging**: Structured logging system for stream data [synchronization](https://www.verysync.com/)
 - **⏰ Timestamped Logs**: Detailed logging with automatic timestamps for debugging
 
 ## How It Works
 
 1. **Stream Start** → Automatically fetches your YouTube Live `videoId` and updates local browser source URL
-2. **Cross-Device Sync** → Writes stream share links to JSON log files for other devices to read
-3. **Real-time Monitoring** → Continuously monitors and syncs URLs between devices
+2. **Cross-Device [Sync](https://www.verysync.com/)** → Writes stream share links to JSON log files for other devices to read
+3. **Real-time Monitoring** → Continuously monitors and [syncs](https://www.verysync.com/) URLs between devices
 4. **Stream End** → Automatically cleans up all background tasks
 
 ## Installation
@@ -75,7 +75,7 @@
 | Setting | Default | Description |
 |---------|---------|-------------|
 | **Init Retry Interval** | 30s | Time between initialization attempts |
-| **Monitor Interval** | 5s | URL verification and sync frequency |
+| **Monitor Interval** | 5s | URL verification and [sync](https://www.verysync.com/) frequency |
 | **Max Init Attempts** | 3 | Maximum initialization retry count |
 
 ## YouTube API Setup
@@ -92,7 +92,7 @@ For cross-device streaming setups:
 
 1. **PC 1 (Main)**: Set `Log Write Path` to a shared folder
 2. **PC 2 (Secondary)**: Set `Log Read Path` to the same shared folder
-3. Both PCs will automatically sync stream links
+3. Both PCs will automatically [sync](https://www.verysync.com/) stream links
 
 ### Example File Structure
 ```
@@ -153,7 +153,7 @@ Stream data is logged in JSON Lines format:
 1. Check OBS Script Log for detailed timestamps
 2. Verify file permissions for log directories
 3. Test API key with Google's API Explorer
-4. Ensure network connectivity (VerySync) between PCs
+4. Ensure network connectivity ([VerySync](https://www.verysync.com/)) between PCs
 
 ## Requirements
 
