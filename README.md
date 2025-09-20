@@ -3,7 +3,7 @@
 🔄 Automated YouTube Live Chat URL management and cross-device stream link sharing for OBS Studio.
 
 1. **Usage**: *[BiliBili](https://www.bilibili.com/video/BV1xqtrzjEHV)*, *[YouTube](https://youtu.be/XyUmUvaArpQ?si=nYd0TS-n8Fj00zj_)*
-2. **My everyday dual-accounts live-streaming**: , *[@xczphysics](https://www.youtube.com/@xczphysics/streams)*, *[@尘竹-3-梦瑶](https://www.youtube.com/@尘竹-3-梦瑶/streams)*
+2. **My everyday dual-accounts live-streaming**: *[@xczphysics](https://www.youtube.com/@xczphysics/streams)*, *[@尘竹-3-梦瑶](https://www.youtube.com/@尘竹-3-梦瑶/streams)*
 3. **Other wonderful OBS stuff**:
    - *[youtube-live-chat-overlay](https://github.com/EuSouGuil/youtube-live-chat-overlay)*
 4. **Products that functions similarly to mine**:
