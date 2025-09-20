@@ -4,6 +4,8 @@
 
 **Usage**: *[BiliBili](https://www.bilibili.com/video/BV1xqtrzjEHV)*, *[YouTube](https://youtu.be/XyUmUvaArpQ?si=nYd0TS-n8Fj00zj_)*
 
+**My everyday dual-accounts live-streaming**: , *[@xczphysics](https://www.youtube.com/@xczphysics/streams)*, *[@%E5%B0%98%E7%AB%B9-3-%E6%A2%A6%E7%91%B6](https://www.youtube.com/@%E5%B0%98%E7%AB%B9-3-%E6%A2%A6%E7%91%B6/streams)*
+
 **Other wonderful OBS stuff**:
  - *[youtube-live-chat-overlay](https://github.com/EuSouGuil/youtube-live-chat-overlay)*
 
