@@ -1,6 +1,6 @@
 # OBS YouTube Live Chat Sync
 
-🔄 Automated YouTube Live Chat URL management and cross-device stream link sharing for OBS Studio.
+Automated YouTube Live Chat URL management and 🔄 cross-device stream link sharing for OBS Studio.
 
 1. **Usage**:
    - *[Tutorial 1](https://youtu.be/xXMUXBz1P74)*, *[Tutorial 2](https://youtu.be/XyUmUvaArpQ)*
