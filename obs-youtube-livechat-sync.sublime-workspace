@@ -1,0 +1,670 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"highl",
+				"highlight"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					""
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Traditional"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"PdfLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"XeLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"LuaLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder - PdfLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder - XeLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder - LuaLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Script Builder"
+				]
+			],
+			[
+				"Packages/LaTeXTools/LaTeX.sublime-build",
+				"Traditional"
+			]
+		],
+		[
+			[
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					""
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Traditional Builder"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Traditional Builder with PdfLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Traditional Builder with XeLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Traditional Builder with LuaLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder with PdfLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder with XeLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Basic Builder with LuaLaTeX"
+				],
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					"Script Builder"
+				]
+			],
+			[
+				"Packages/LaTeXTools/LaTeX.sublime-build",
+				"Traditional Builder with XeLaTeX"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"change llm",
+				"Pieces: Change LLM"
+			],
+			[
+				"pack upda",
+				"Package Control: Upgrade All Packages"
+			],
+			[
+				"change",
+				"Pieces: Change LLM"
+			],
+			[
+				"change ll",
+				"Pieces: Change LLM"
+			],
+			[
+				"llm ch",
+				"Pieces: Change LLM"
+			],
+			[
+				"packa con ",
+				"Package Control: Install Package"
+			],
+			[
+				"quick temp",
+				"QuickLineNavigator: Toggle Extension Filters (Temporary)"
+			],
+			[
+				"quick filter",
+				"QuickLineNavigator: Toggle Extension Filters (Temporary)"
+			],
+			[
+				"quick  temp",
+				"QuickLineNavigator: Toggle Extension Filters (Temporary)"
+			],
+			[
+				"quick clea",
+				"QuickLineNavigator: Clear All Keyword Highlights"
+			],
+			[
+				"list packa",
+				"Package Control: List Packages"
+			],
+			[
+				"QUICK folder",
+				"QuickLineNavigator: Search in Folder"
+			],
+			[
+				"QUICK open",
+				"QuickLineNavigator: Search in Open Files"
+			],
+			[
+				"pac control ",
+				"Package Control: Install Package"
+			],
+			[
+				"pices chang",
+				"Pieces: Change LLM"
+			],
+			[
+				"pieces change",
+				"Pieces: Change LLM"
+			],
+			[
+				"packa con",
+				"Package Control: Install Package"
+			],
+			[
+				"latex build ",
+				"Build With: LaTeX - Traditional Builder with XeLaTeX"
+			],
+			[
+				"satis",
+				"Package Control: Satisfy Packages"
+			],
+			[
+				"install packa",
+				"Package Control: Install Package"
+			],
+			[
+				"package remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"list pa",
+				"Package Control: List Packages"
+			],
+			[
+				"latex bui",
+				"Build With: LaTeX - Basic Builder - XeLaTeX"
+			],
+			[
+				"packa sa",
+				"Package Control: Satisfy Packages"
+			],
+			[
+				"packa list",
+				"Package Control: List Packages"
+			],
+			[
+				"build latex",
+				"Build With: LaTeX - Basic Builder - XeLaTeX"
+			],
+			[
+				"build",
+				"Build With: LaTeX - Basic Builder - XeLaTeX"
+			],
+			[
+				"latex",
+				"Build With: LaTeX - Basic Builder - XeLaTeX"
+			],
+			[
+				"list pack",
+				"Package Control: List Packages"
+			],
+			[
+				"packa satis",
+				"Package Control: Satisfy Packages"
+			],
+			[
+				"packa lis",
+				"Package Control: List Packages"
+			],
+			[
+				"build ",
+				"Build With: LaTeX - Basic Builder - XeLaTeX"
+			],
+			[
+				"Package Control: list",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Clear Cache Directory"
+			],
+			[
+				"pacage sati",
+				"Package Control: Satisfy Libraries"
+			],
+			[
+				"pacage ins",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Satisfy Libraries"
+			],
+			[
+				"package ",
+				"Package Control: Satisfy Packages"
+			],
+			[
+				"packa sat",
+				"Package Control: List Packages"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"latex build",
+				"Build With: LaTeX - Basic Builder - XeLaTeX"
+			],
+			[
+				"package inst",
+				"Package Control: Install Package"
+			],
+			[
+				"package satis",
+				"Package Control: Satisfy Libraries"
+			],
+			[
+				"package upda",
+				"Package Control: Upgrade All Packages"
+			],
+			[
+				"package ins",
+				"Package Control: Install Package"
+			],
+			[
+				"package sa",
+				"Package Control: Satisfy Packages"
+			],
+			[
+				"Package Control: Satisfy Libraries",
+				"Package Control: Satisfy Libraries"
+			],
+			[
+				"view",
+				"View: Toggle Menu"
+			],
+			[
+				"packa control list",
+				"Package Control: List Packages"
+			],
+			[
+				"packa contro lis",
+				"Package Control: List Packages"
+			],
+			[
+				"build with ",
+				"Build With: LaTeX - Traditional Builder"
+			],
+			[
+				"latextool",
+				"Preferences: LaTeXTools Mouse Bindings"
+			],
+			[
+				"Package Control: INS",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: INST",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: INSTALL",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"paca instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: inst",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			],
+			[
+				"pieces",
+				"Pieces: Open Pieces Settings"
+			],
+			[
+				"Package Control: up",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"packa",
+				"Preferences: Browse Packages"
+			],
+			[
+				"Package",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 186.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/C2D/Desktop/直播_Setup/obs-youtube-livechat-sync"
+	],
+	"file_history":
+	[
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/messages.json",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/QuickLineNavigator.py",
+		"/D/C2D/Desktop/直播_Setup/Soft_ware setup/youtube_live_chat_fetch-brouser=api-free.py",
+		"/E/Text_editor/SublimeText/Data/Packages/QuickLineNavigator/Default (Linux).sublime-keymap",
+		"/E/Text_editor/SublimeText/Data/Packages/QuickLineNavigator/Default (OSX).sublime-keymap",
+		"/E/Text_editor/SublimeText/Data/Packages/QuickLineNavigator/Default (Windows).sublime-keymap",
+		"/E/Text_editor/SublimeText/Data/Packages/QuickLineNavigator/messages.json",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/messages/install.txt",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/README.md",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/Default (Windows).sublime-keymap",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/.gitignore",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/Default (Linux).sublime-keymap",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/Default (OSX).sublime-keymap",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/Default.sublime-commands",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/quick_line_navigator.py",
+		"/E/Text_editor/SublimeText/Data/Packages/WakaTime/package-metadata.json",
+		"/E/Text_editor/SublimeText/Data/Packages/Search in Project/package-metadata.json",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/Default.sublime-settings",
+		"/D/C2D/Desktop/Code/Python/projects/drag_build_package.bat",
+		"/D/C2D/Desktop/Code/Python/projects/drag_build_package.bat.new.bat",
+		"/D/C2D/Desktop/Code/Python/projects/test.txt",
+		"/E/Text_editor/SublimeText/Data/Packages/User/Adaptive.sublime-theme",
+		"/E/Text_editor/SublimeText/Data/Packages/User/Package Control.sublime-settings",
+		"/E/Text_editor/SublimeText/Data/Packages/User/Pieces/onboarding_settings.json",
+		"/E/Text_editor/SublimeText/Data/Packages/User/Preferences.sublime-settings",
+		"/E/Text_editor/SublimeText/Data/Packages/QuickLineNavigator/quick_line_navigator.py",
+		"/E/Text_editor/SublimeText/Data/Packages/QuickLineNavigator/manual_version_control/quick_line_navigator - 0 提示 Ugrep 信息.py",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/chapters/chapter4.tex",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/njuthesis-sample.tex",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/manual_version_control/quick_line_navigator - 3.33 关键词 可保存情况下，尝试修复 switch 搜索命令的 bug.py",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/TeXstudio_Compile_Settings.txsprofile",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/chapters/chapter2.tex",
+		"/E/Text_editor/SublimeText/Data/Packages/User/QuickLineNavigator.sublime-settings",
+		"/D/C2D/Desktop/Code/Python/projects/QuickLineNavigator/QuickLineNavigator.sublime-settings",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/chapters/chapter3.tex",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/tmp/chapters/chapter4.aux",
+		"/D/C2D/Desktop/Code/Python/projects/package_control_channel/repository/q.json",
+		"/E/Text_editor/SublimeText/Data/Packages/QuickLineNavigator/QuickLineNavigator.sublime-settings",
+		"/C/Users/Xcz/AppData/Roaming/Mesh Intelligent Technologies, Inc/Pieces OS/shared_preferences.json",
+		"/D/C2D/Desktop/Code/Python/projects/package_control_channel/repository.json",
+		"/E/Text_editor/SublimeText/Data/Packages/User/rg_fzf_search.sublime-settings",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/hlp.sublime-snippet",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/doc.sublime-project",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/subequations.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/align.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/beq.sublime-snippet",
+		"/F/Audio/LiveCaptionsTranslator/setting.json",
+		"/F/Audio/LunaTranslator_x64_win10/translation_record/0_copy.json",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/bb.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/PineGreen.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/Plum.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/NavyBlue.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/Maroon.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/gray.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/plum.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/pl.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/pl - 副本.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/gr - 副本.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/gr.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/br.sublime-snippet",
+		"/E/Text_editor/SublimeText/Data/Packages/Usersnippets/b.sublime-snippet",
+		"/C/Users/Xcz/.wakatime.cfg",
+		"/D/CtoD/Default/桌面/直播/my-youtube-api-project-468104-3ce4bf9fb8af.json",
+		"/D/CtoD/Default/桌面/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/chapters/chapter4.tex",
+		"/D/CtoD/Default/下载/未命名_2.json",
+		"/D/CtoD/Default/桌面/Copy_History/log/20250806_copy_History.txt",
+		"/E/Application/Noter/siyuan_data1/data/plugins/wakatime/plugin.json",
+		"/E/Application/Text_Editor/SublimeText/Data/Packages/User/WakaTime.sublime-settings",
+		"/E/Application/Text_Editor/SublimeText/Data/Packages/User/LaTeXTools.sublime-settings",
+		"/E/Application/Text_Editor/SublimeText/Data/Packages/LaTeXTools/dependencies.json",
+		"/E/Application/Text_Editor/SublimeText/Data/Packages/User/Default (Windows).sublime-keymap",
+		"/D/CtoD/Default/下载/必看_安装配置步骤.txt",
+		"/C/Windows/WinSxS/amd64_userexperience-core_31bf3856ad364e35_10.0.26100.4768_none_53d315517add2b01/Core/LiveCaptions/LiveCaptions.manifest",
+		"/C/Windows/WinSxS/amd64_userexperience-sxs_31bf3856ad364e35_10.0.26100.4652_none_41bf8b3c728f1b8a/57074914.Livtop/LiveCaptions/LiveCaptions.manifest",
+		"/C/Windows/SystemApps/MicrosoftWindows.Client.Core_cw5n1h2txyewy/LiveCaptions/LiveCaptions.manifest",
+		"/C/Windows/SystemApps/SxS/MicrosoftWindows.57074914.Livtop_cw5n1h2txyewy/LiveCaptions/LiveCaptions.manifest",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/doc.sublime-workspace",
+		"/E/Text_editor/SublimeText/Data/Packages/User/Side Bar.sublime-settings",
+		"/E/Text_editor/SublimeText/Data/Packages/LaTeXTools/Default (Windows).sublime-keymap",
+		"/E/Text_editor/SublimeText/Data/Cache/LaTeXTools/internal/preview_math/98c9d979a2e543f1398f3d1f4339bc60.png.err",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/chapters/chapter0.tex",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/chapters/chapter1.tex",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/chapters/chapter5.tex",
+		"/D/C2D/Desktop/Code/Latex/TexStudio/0.njuthesis/NJU_thesis_doctor__xcz/docs/latex.sublime-workspace",
+		"/E/Text_editor/SublimeText/Data/Packages/Package Control/Package Control.sublime-settings",
+		"/E/Text_editor/SublimeText/Data/Packages/User/Default (Windows).sublime-mousemap",
+		"/C/Users/Xcz/AppData/Roaming/Code/User/settings.json"
+	],
+	"find":
+	{
+		"height": 42.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "README.md",
+					"selected": true,
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 42.0
+	},
+	"input":
+	{
+		"height": 333.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.Pieces Auth":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.latextools":
+	{
+		"height": 142.0,
+		"history":
+		[
+		]
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"output.mdpopups-dummy":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "obs-youtube-livechat-sync.sublime-project",
+	"replace":
+	{
+		"height": 80.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"E:\\Text_editor\\SublimeText\\Data\\Packages\\QuickLineNavigator\\QuickLineNavigator.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 335.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
