@@ -76,8 +76,8 @@ Automated YouTube Live Chat URL management and 🔄 cross-device stream link sha
 | **Write Log File Path** | Directory or file path where this PC writes its stream logs | `C:\StreamLogs\` |
 | **Read Log Directory Path** | Directory path to read other PC's stream logs | `\\OtherPC\SharedLogs\` |
 
-<img width="1557" height="1182" alt="image" src="https://github.com/user-attachments/assets/8999367c-9581-4f27-b81f-82b887218936" />
-<img width="1547" height="212" alt="image" src="https://github.com/user-attachments/assets/bf3fbfb8-8e2e-4ef3-b6b3-6cf40250bbce" />
+<img width="1723" height="897" alt="image" src="https://github.com/user-attachments/assets/51aba7ad-cdda-48a1-a387-a1301e84c3cf" />
+<img width="1350" height="209" alt="image" src="https://github.com/user-attachments/assets/6443cfe7-50b8-4cda-9d1d-b0b3609a9791" />
 
 ### Optional Settings
 
@@ -115,7 +115,7 @@ For cross-device streaming setups:
 └── SecondaryPC.jsonl # Written by secondary PC
 ```
 
-<img width="1077" height="513" alt="image" src="https://github.com/user-attachments/assets/08cfe469-ca60-4800-a576-e5ca3c0454e0" />
+<img width="1051" height="616" alt="image" src="https://github.com/user-attachments/assets/4c2b9d37-c0e9-4bc0-af37-770ccc8a98a8" />
 
 ## API Quota Management
 
@@ -170,7 +170,7 @@ Stream data is logged in JSON Lines format:
 - Check network connectivity between PCs
 - Ensure shared folder paths are accessible
 
-<img width="1659" height="513" alt="image" src="https://github.com/user-attachments/assets/4abaadb8-e085-4fb8-8ecc-6ba52437e20b" />
+<img width="1611" height="517" alt="image" src="https://github.com/user-attachments/assets/824a7ecd-5a4d-4a7b-8997-84cad2f5d2cb" />
 
 ### Debug Tips
 
@@ -202,7 +202,9 @@ GPLv3.0 License - feel free to use and modify for your streaming needs.
 
 ## Disclaimer
 
-This tool uses HTML parsing as primary method and YouTube Data API v3 as fallback. Please be mindful of your API quota limits and YouTube's Terms of Service. The HTML parsing method may be affected by YouTube page structure changes.
+This tool uses HTML parsing as primary method and YouTube Data API v3 as fallback. 
+Please be mindful of your API quota limits and YouTube's Terms of Service. 
+The HTML parsing method may be affected by YouTube page structure changes.
 
 ---
 
