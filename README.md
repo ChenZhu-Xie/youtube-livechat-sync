@@ -1,4 +1,4 @@
-# OBS YouTube Live Chat Sync
+# YouTube Live Chat Sync
 
 Automated YouTube Live Chat URL management and 🔄 cross-device stream link sharing for OBS Studio.
 
