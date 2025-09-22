@@ -82,8 +82,8 @@ Automated YouTube Live Chat URL management and 🔄 cross-device stream link sha
 | **Channel Handle/ID/URL** | YouTube channel identifier (multiple formats supported) | `@username` or `UC...` or full URL |
 | **Browser Source Name** | Name of your OBS browser source for chat display | `YouTube Chat` |
 | **Computer Identifier** | Unique name for this computer in multi-PC setups | `StreamPC1` |
-| **Write Log File Path** | Directory or file path where this PC writes its stream logs | `C:\StreamLogs\` |
-| **Read Log Directory Path** | Directory path to read other PC's stream logs | `\\OtherPC\SharedLogs\` |
+| **Write Log File Path** | Directory or file path where this PC writes its stream logs | `C:\StreamLogs\PC1.jsonl` |
+| **Read Log Directory Path** | Directory path to read other PC's stream logs | `\\OtherPC\SharedLogs\PC2.jsonl` |
 
 <img width="1723" height="897" alt="image" src="https://github.com/user-attachments/assets/51aba7ad-cdda-48a1-a387-a1301e84c3cf" />
 <img width="1350" height="209" alt="image" src="https://github.com/user-attachments/assets/6443cfe7-50b8-4cda-9d1d-b0b3609a9791" />
