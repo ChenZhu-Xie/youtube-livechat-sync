@@ -211,9 +211,9 @@ GPLv3.0 License - feel free to use and modify for your streaming needs.
 
 ## Disclaimer
 
-This tool uses HTML parsing as primary method and YouTube Data API v3 as fallback. 
-Please be mindful of your API quota limits and YouTube's Terms of Service. 
-The HTML parsing method may be affected by YouTube page structure changes.
+- This tool uses HTML parsing as primary method and YouTube Data API v3 as fallback. 
+- Please be mindful of your API quota limits and YouTube's Terms of Service. 
+- The HTML parsing method may be affected by YouTube page structure changes.
 
 ---
 
