@@ -36,15 +36,24 @@ Automated YouTube Live Chat URL management and 🔄 cross-device stream link sha
 
 ## Features
 
-- **🚀 Automatic Chat URL Detection**: Primary HTML parsing method with API fallback for reliable video ID detection
-- **🔗 Cross-Device Stream Sharing**: Share live stream links between multiple computers automatically (with [verysync](https://www.verysync.com/))
-- **⚡ Real-time Monitoring**: Continuous browser source URL monitoring and correction with periodic video ID updates
-- **🛡️ Enhanced API Protection**: Advanced quota management with exponential backoff, request rate limiting, and consecutive failure tracking
-- **🔄 Auto Browser Refresh**: Automatic browser source cache refresh every 4 seconds to prevent chat display issues
-- **📝 JSON Logging**: Structured logging system for stream data [synchronization](https://www.verysync.com/) with timestamped entries
-- **🎯 Smart Channel Input**: Supports channel IDs, handles (@username), and full YouTube URLs with intelligent normalization
-- **⚙️ Thread-Safe Operations**: Background processing with thread locks for reliable multi-timer coordination
-- **🔧 Pending Video ID System**: Smooth video ID transitions with background updates to prevent chat interruption
+- **🚀 Automatic Chat URL Detection**
+  - Primary HTML parsing method with API fallback for reliable video ID detection
+- **🔗 Cross-Device Stream Sharing**
+  - Share live stream links between multiple computers automatically (with [verysync](https://www.verysync.com/))
+- **⚡ Real-time Monitoring**
+  - Continuous browser source URL monitoring and correction with periodic video ID updates
+- **🛡️ Enhanced API Protection**
+  - Advanced quota management with exponential backoff, request rate limiting, and consecutive failure tracking
+- **🔄 Auto Browser Refresh**
+  - Automatic browser source cache refresh every 4 seconds to prevent chat display issues
+- **📝 JSON Logging**
+  - Structured logging system for stream data [synchronization](https://www.verysync.com/) with timestamped entries
+- **🎯 Smart Channel Input**
+  - Supports channel IDs, handles (@username), and full YouTube URLs with intelligent normalization
+- **⚙️ Thread-Safe Operations**
+  - Background processing with thread locks for reliable multi-timer coordination
+- **🔧 Pending Video ID System**
+  - Smooth video ID transitions with background updates to prevent chat interruption
 
 ## How It Works
 
