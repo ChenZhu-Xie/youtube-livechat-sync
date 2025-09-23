@@ -92,7 +92,7 @@ Automated YouTube Live Chat URL management and 🔄 cross-device stream link sha
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| **Base Init Interval (sec)** | 10 | Initial retry interval for stream detection |
+| **Base Init Interval (sec)** | 1 | Initial retry interval for stream detection |
 | **Monitor & Refresh Interval (sec)** | 4 | Frequency of URL monitoring and browser refresh |
 | **Maximum Init Attempts** | 3 | Maximum initialization retry attempts |
 | **Max Init Retry Interval (sec)** | 30 | Maximum retry interval with exponential backoff |
