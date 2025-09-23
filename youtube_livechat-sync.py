@@ -44,6 +44,7 @@ _pending_video_id = None
 _video_id_lock = threading.Lock()
 _last_scheduled_refresh = 0
 _refresh_timer_active = False
+_update_request_in_progress = False
 
 SHARE_LINK_PATTERN = re.compile(r'https://youtube\.com/live/[a-zA-Z0-9_-]+\?feature=share')
 
@@ -94,8 +95,6 @@ def refresh_browser_source():
 
         obs.obs_data_set_bool(settings, "refresh_cache", False)
         obs.obs_source_update(src, settings)
-
-        # log_with_timestamp(obs.LOG_INFO, "✅ [REFRESH] Browser source refreshed")
 
         obs.obs_data_release(settings)
         obs.obs_source_release(src)
@@ -359,16 +358,25 @@ def apply_pending_video_id():
         return False
 
 def update_video_id_periodically():
+    global _update_request_in_progress
+
     if not _streaming_active or not _inited:
         return
 
+    if _update_request_in_progress:
+        return
+
     def background_update():
+        global _update_request_in_progress
         try:
+            _update_request_in_progress = True
             new_video_id = get_video_id_html(CHANNEL_INPUT, timeout=30)
             if new_video_id:
                 set_pending_video_id(new_video_id)
         except Exception:
             pass
+        finally:
+            _update_request_in_progress = False
 
     threading.Thread(target=background_update, daemon=True).start()
 
@@ -550,9 +558,19 @@ def init_live_chat():
         log_with_timestamp(obs.LOG_INFO, f"🎉 [INIT] Success! Quota used: {_total_quota_used}")
 
         _stop_init_timer()
-        _start_monitor_timer()
-        _start_update_timer()
-        _start_refresh_timer()
+
+        def start_monitor_timer():
+            _start_monitor_timer()
+
+        def start_refresh_timer():
+            _start_refresh_timer()
+
+        def start_update_timer():
+            _start_update_timer()
+
+        obs.timer_add(start_monitor_timer, 2000)
+        obs.timer_add(start_refresh_timer, 5000)
+        obs.timer_add(start_update_timer, 10000)
 
     except Exception as e:
         log_with_timestamp(obs.LOG_ERROR, f"❌ [INIT] Unexpected error: {e}")
@@ -632,7 +650,7 @@ def _reset_state():
     global _video_id, _popout_chat_url, _inited, _last_posted_link, _last_log_mtime
     global _init_attempt_count, _api_call_count, _total_quota_used
     global _refresh_in_progress, _last_refresh_time
-    global _current_init_interval, _consecutive_failures, _pending_video_id
+    global _current_init_interval, _consecutive_failures, _pending_video_id, _update_request_in_progress
 
     _video_id, _popout_chat_url, _last_posted_link, _last_log_mtime, _inited = None, None, None, None, False
     _init_attempt_count = 0
@@ -643,6 +661,7 @@ def _reset_state():
     _current_init_interval = BASE_INIT_INTERVAL
     _consecutive_failures = 0
     _pending_video_id = None
+    _update_request_in_progress = False
     _stop_all()
 
 def _stop_all():
