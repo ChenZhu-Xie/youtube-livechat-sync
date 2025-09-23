@@ -124,7 +124,7 @@ For cross-device streaming setups:
 └── SecondaryPC.jsonl # Written by secondary PC
 ```
 
-<img width="1049" height="608" alt="image" src="https://github.com/user-attachments/assets/70360fb0-de47-4ba5-a88c-f2bf29afaa6d" />
+<img width="1056" height="608" alt="image" src="https://github.com/user-attachments/assets/fadb83fa-dc9e-4afd-97ad-4828d076077a" />
 
 ## API Quota Management
 
@@ -179,7 +179,7 @@ Stream data is logged in JSON Lines format:
 - Check network connectivity between PCs
 - Ensure shared folder paths are accessible
 
-<img width="1611" height="517" alt="image" src="https://github.com/user-attachments/assets/824a7ecd-5a4d-4a7b-8997-84cad2f5d2cb" />
+<img width="1614" height="691" alt="image" src="https://github.com/user-attachments/assets/f4e6af89-d6c7-436e-b3f4-42fc6451e732" />
 
 ### Debug Tips
 
