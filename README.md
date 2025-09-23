@@ -124,7 +124,7 @@ For cross-device streaming setups:
 └── SecondaryPC.jsonl # Written by secondary PC
 ```
 
-<img width="1051" height="616" alt="image" src="https://github.com/user-attachments/assets/4c2b9d37-c0e9-4bc0-af37-770ccc8a98a8" />
+<img width="1049" height="608" alt="image" src="https://github.com/user-attachments/assets/70360fb0-de47-4ba5-a88c-f2bf29afaa6d" />
 
 ## API Quota Management
 
