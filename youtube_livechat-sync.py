@@ -83,7 +83,7 @@ def refresh_browser_source():
 
         settings = obs.obs_source_get_settings(src)
         current_url = obs.obs_data_get_string(settings, "url")
-        expected_url = f"https://studio.youtube.com/live_chat?is_popout=1&v={current_video_id}"
+        expected_url = f"https://www.youtube.com/live_chat?is_popout=1&v={current_video_id}"
 
         if current_url != expected_url:
             log_with_timestamp(obs.LOG_INFO, f"🔧 [REFRESH] URL mismatch, correcting: {current_url} -> {expected_url}")
@@ -329,7 +329,7 @@ def set_primary_video_id(video_id):
     with _video_id_lock:
         _video_id = video_id
         if video_id:
-            _popout_chat_url = f"https://studio.youtube.com/live_chat?is_popout=1&v={video_id}"
+            _popout_chat_url = f"https://www.youtube.com/live_chat?is_popout=1&v={video_id}"
 
 def set_pending_video_id(video_id):
     global _pending_video_id
@@ -342,7 +342,7 @@ def apply_pending_video_id():
         if _pending_video_id and _pending_video_id != _video_id:
             old_id = _video_id
             _video_id = _pending_video_id
-            _popout_chat_url = f"https://studio.youtube.com/live_chat?is_popout=1&v={_video_id}"
+            _popout_chat_url = f"https://www.youtube.com/live_chat?is_popout=1&v={_video_id}"
 
             src = obs.obs_get_source_by_name(BROWSER_SOURCE)
             if src:

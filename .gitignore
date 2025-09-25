@@ -208,3 +208,4 @@ __marimo__/
 
 manual_version_control/
 *.sublime-workspace
+.verysync
