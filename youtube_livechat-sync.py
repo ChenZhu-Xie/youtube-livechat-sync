@@ -90,11 +90,30 @@ def refresh_browser_source():
             obs.obs_data_set_string(settings, "url", expected_url)
             obs.obs_source_update(src, settings)
 
-        obs.obs_data_set_bool(settings, "refresh_cache", True)
-        obs.obs_source_update(src, settings)
+        action = globals().get('_next_refresh_action', 0)
 
-        obs.obs_data_set_bool(settings, "refresh_cache", False)
-        obs.obs_source_update(src, settings)
+        if action == 2:
+            log_with_timestamp(obs.LOG_INFO, "🧨 [REFRESH] One-shot HARD reload (shutdown) due to connection error")
+            obs.obs_data_set_bool(settings, "shutdown", True)
+            obs.obs_source_update(src, settings)
+            obs.obs_data_set_bool(settings, "shutdown", False)
+            obs.obs_source_update(src, settings)
+
+        elif action == 1:
+            log_with_timestamp(obs.LOG_INFO, "🔄 [REFRESH] One-shot FULL reload (restart_when_active) due to timeout")
+            obs.obs_data_set_bool(settings, "restart_when_active", True)
+            obs.obs_source_update(src, settings)
+            obs.obs_data_set_bool(settings, "restart_when_active", False)
+            obs.obs_source_update(src, settings)
+
+        else:
+            obs.obs_data_set_bool(settings, "refresh_cache", True)
+            obs.obs_source_update(src, settings)
+            obs.obs_data_set_bool(settings, "refresh_cache", False)
+            obs.obs_source_update(src, settings)
+
+        if action:
+            globals()['_next_refresh_action'] = 0
 
         obs.obs_data_release(settings)
         obs.obs_source_release(src)
@@ -115,7 +134,7 @@ def scheduled_refresh():
 def _start_refresh_timer():
     global _refresh_timer_active
     if not _refresh_timer_active:
-        obs.timer_add(scheduled_refresh, 4000)
+        obs.timer_add(scheduled_refresh, 5000)
         _refresh_timer_active = True
 
 def _stop_refresh_timer():
@@ -220,11 +239,13 @@ def get_video_id_html(channel_input, timeout=30):
         except requests.exceptions.Timeout:
             log_with_timestamp(obs.LOG_WARNING, f"⏰ [HTML] Request timeout after {timeout} seconds")
             _consecutive_failures += 1
+            globals()['_next_refresh_action'] = max(globals().get('_next_refresh_action', 0), 1)
             return None
 
         except requests.exceptions.ConnectionError:
             log_with_timestamp(obs.LOG_WARNING, f"🔌 [HTML] Connection error")
             _consecutive_failures += 1
+            globals()['_next_refresh_action'] = 2
             return None
 
         except requests.exceptions.HTTPError as e:
