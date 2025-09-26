@@ -16,10 +16,10 @@ COMPUTER_NAME = ""
 WRITE_LOG_PATH = ""
 READ_LOG_PATH = ""
 BASE_INIT_INTERVAL = 1
-REFRESH_COOLDOWN = 20
+REFRESH_COOLDOWN = 11
 MAX_INIT_ATTEMPTS = 3
-MAX_INIT_INTERVAL = 40
-UPDATE_INTERVAL = 40
+MAX_INIT_INTERVAL = 23
+UPDATE_INTERVAL = 23
 
 _video_id = None
 _popout_chat_url = None
@@ -162,7 +162,7 @@ def scheduled_refresh():
 def _start_refresh_timer():
     global _refresh_timer_active
     if not _refresh_timer_active:
-        obs.timer_add(scheduled_refresh, 10000)
+        obs.timer_add(scheduled_refresh, 5000)
         _refresh_timer_active = True
 
 def _stop_refresh_timer():
@@ -206,7 +206,7 @@ def build_channel_streams_url(channel_input):
 
     return None
 
-def get_video_id_html(channel_input, timeout=40):
+def get_video_id_html(channel_input, timeout=23):
     global _consecutive_failures, _last_request_time
 
     with _request_lock:
@@ -305,7 +305,7 @@ def handle_to_channel_id_api(handle, api_key):
         })
 
         context = create_ssl_context()
-        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q}", timeout=30, context=context) as r:
+        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q}", timeout=20, context=context) as r:
             data = json.load(r)
 
         items = data.get("items", [])
@@ -353,7 +353,7 @@ def get_video_id_api(channel_input, api_key):
         })
 
         context = create_ssl_context()
-        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q1}", timeout=30, context=context) as r:
+        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q1}", timeout=20, context=context) as r:
             data = json.load(r)
 
         time.sleep(1)
@@ -368,7 +368,7 @@ def get_video_id_api(channel_input, api_key):
             log_with_timestamp(obs.LOG_INFO, f"🌐 [API] Making HTTP request for video details: {video_id}")
 
             q2 = urllib.parse.urlencode({"part": "liveStreamingDetails", "id": video_id, "key": api_key})
-            with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/videos?{q2}", timeout=30, context=context) as r:
+            with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/videos?{q2}", timeout=20, context=context) as r:
                 data = json.load(r)
 
             time.sleep(1)
@@ -436,7 +436,7 @@ def update_video_id_periodically():
         global _update_request_in_progress
         try:
             _update_request_in_progress = True
-            new_video_id = get_video_id_html(CHANNEL_INPUT, timeout=40)
+            new_video_id = get_video_id_html(CHANNEL_INPUT, timeout=23)
             if new_video_id:
                 set_pending_video_id(new_video_id)
         except Exception:
@@ -596,7 +596,7 @@ def init_live_chat():
 
     try:
         video_id = None
-        video_id = get_video_id_html(CHANNEL_INPUT, timeout=40)
+        video_id = get_video_id_html(CHANNEL_INPUT, timeout=23)
 
         if not video_id and API_KEY:
             video_id = get_video_id_api(CHANNEL_INPUT, API_KEY)
@@ -634,9 +634,9 @@ def init_live_chat():
         def start_update_timer():
             _start_update_timer()
 
-        obs.timer_add(start_monitor_timer, 2000)
-        obs.timer_add(start_refresh_timer, 4000)
-        obs.timer_add(start_update_timer, 6000)
+        obs.timer_add(start_monitor_timer, 2300)
+        obs.timer_add(start_refresh_timer, 4500)
+        obs.timer_add(start_update_timer, 6700)
 
     except Exception as e:
         log_with_timestamp(obs.LOG_ERROR, f"❌ [INIT] Unexpected error: {e}")
