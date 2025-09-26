@@ -15,11 +15,11 @@ BROWSER_SOURCE = ""
 COMPUTER_NAME = ""
 WRITE_LOG_PATH = ""
 READ_LOG_PATH = ""
-BASE_INIT_INTERVAL = 1
-REFRESH_COOLDOWN = 10
+BASE_INIT_INTERVAL = 10
+REFRESH_COOLDOWN = 20
 MAX_INIT_ATTEMPTS = 3
-MAX_INIT_INTERVAL = 20
-UPDATE_INTERVAL = 20
+MAX_INIT_INTERVAL = 40
+UPDATE_INTERVAL = 40
 
 _video_id = None
 _popout_chat_url = None
@@ -112,12 +112,18 @@ def refresh_browser_source():
         action = globals().get('_next_refresh_action', 0)
 
         if action == 2:
-            log_with_timestamp(obs.LOG_INFO, "🧨 [REFRESH] One-shot HARD reload (shutdown) due to connection error")
-            obs.obs_data_set_bool(settings, "shutdown", True)
+            log_with_timestamp(obs.LOG_INFO, "🧨 [REFRESH] One-shot HARD reload (restart_when_active) due to timeout")
+            obs.obs_data_set_bool(settings, "restart_when_active", False)
             obs.obs_source_update(src, settings)
             time.sleep(1)
-            obs.obs_data_set_bool(settings, "shutdown", False)
+            obs.obs_data_set_bool(settings, "restart_when_active", True)
             obs.obs_source_update(src, settings)
+            # log_with_timestamp(obs.LOG_INFO, "🧨 [REFRESH] One-shot HARD reload (shutdown) due to connection error")
+            # obs.obs_data_set_bool(settings, "shutdown", True)
+            # obs.obs_source_update(src, settings)
+            # time.sleep(1)
+            # obs.obs_data_set_bool(settings, "shutdown", False)
+            # obs.obs_source_update(src, settings)
 
         elif action == 1:
             log_with_timestamp(obs.LOG_INFO, "🔄 [REFRESH] One-shot FULL reload (restart_when_active) due to timeout")
@@ -156,7 +162,7 @@ def scheduled_refresh():
 def _start_refresh_timer():
     global _refresh_timer_active
     if not _refresh_timer_active:
-        obs.timer_add(scheduled_refresh, 5000)
+        obs.timer_add(scheduled_refresh, 10000)
         _refresh_timer_active = True
 
 def _stop_refresh_timer():
@@ -200,7 +206,7 @@ def build_channel_streams_url(channel_input):
 
     return None
 
-def get_video_id_html(channel_input, timeout=20):
+def get_video_id_html(channel_input, timeout=40):
     global _consecutive_failures, _last_request_time
 
     with _request_lock:
@@ -421,7 +427,7 @@ def update_video_id_periodically():
         global _update_request_in_progress
         try:
             _update_request_in_progress = True
-            new_video_id = get_video_id_html(CHANNEL_INPUT, timeout=20)
+            new_video_id = get_video_id_html(CHANNEL_INPUT, timeout=40)
             if new_video_id:
                 set_pending_video_id(new_video_id)
         except Exception:
@@ -581,7 +587,7 @@ def init_live_chat():
 
     try:
         video_id = None
-        video_id = get_video_id_html(CHANNEL_INPUT, timeout=20)
+        video_id = get_video_id_html(CHANNEL_INPUT, timeout=40)
 
         if not video_id and API_KEY:
             video_id = get_video_id_api(CHANNEL_INPUT, API_KEY)
