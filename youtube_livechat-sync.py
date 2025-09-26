@@ -45,13 +45,32 @@ _video_id_lock = threading.Lock()
 _last_scheduled_refresh = 0
 _refresh_timer_active = False
 _update_request_in_progress = False
+_log_throttle_lock = threading.Lock()
+_last_log_time = 0
+_log_queue = []
 
 SHARE_LINK_PATTERN = re.compile(r'https://youtube\.com/live/[a-zA-Z0-9_-]+\?feature=share')
 
 def log_with_timestamp(level, message):
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    full_message = f"[{timestamp}] {message}"
-    obs.script_log(level, full_message)
+    global _last_log_time, _log_queue
+
+    with _log_throttle_lock:
+        current_time = time.time()
+
+        if current_time - _last_log_time < 0.1:
+            _log_queue.append((level, message))
+            return
+
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        full_message = f"[{timestamp}] {message}"
+        obs.script_log(level, full_message)
+        _last_log_time = current_time
+
+        if _log_queue:
+            queued_level, queued_message = _log_queue.pop(0)
+            queued_timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            queued_full_message = f"[{queued_timestamp}] {queued_message}"
+            obs.script_log(queued_level, queued_full_message)
 
 def calculate_dynamic_interval(base_interval, failures, max_interval):
     if failures == 0:
@@ -96,6 +115,7 @@ def refresh_browser_source():
             log_with_timestamp(obs.LOG_INFO, "🧨 [REFRESH] One-shot HARD reload (shutdown) due to connection error")
             obs.obs_data_set_bool(settings, "shutdown", True)
             obs.obs_source_update(src, settings)
+            time.sleep(0.1)
             obs.obs_data_set_bool(settings, "shutdown", False)
             obs.obs_source_update(src, settings)
 
@@ -103,12 +123,14 @@ def refresh_browser_source():
             log_with_timestamp(obs.LOG_INFO, "🔄 [REFRESH] One-shot FULL reload (restart_when_active) due to timeout")
             obs.obs_data_set_bool(settings, "restart_when_active", True)
             obs.obs_source_update(src, settings)
+            time.sleep(0.1)
             obs.obs_data_set_bool(settings, "restart_when_active", False)
             obs.obs_source_update(src, settings)
 
         else:
             obs.obs_data_set_bool(settings, "refresh_cache", True)
             obs.obs_source_update(src, settings)
+            time.sleep(0.1)
             obs.obs_data_set_bool(settings, "refresh_cache", False)
             obs.obs_source_update(src, settings)
 
@@ -192,6 +214,8 @@ def get_video_id_html(channel_input, timeout=30):
         if not streams_url:
             return None
 
+        log_with_timestamp(obs.LOG_INFO, f"🌐 [HTML] Making HTTP request to: {streams_url}")
+
         session = requests.Session()
 
         session.headers.update({
@@ -264,6 +288,8 @@ def handle_to_channel_id_api(handle, api_key):
         _api_call_count += 1
         _total_quota_used += 100
 
+        log_with_timestamp(obs.LOG_INFO, f"🌐 [API] Making HTTP request for handle conversion: {handle}")
+
         q = urllib.parse.urlencode({
             "part": "snippet",
             "q": handle,
@@ -305,6 +331,8 @@ def get_video_id_api(channel_input, api_key):
         _api_call_count += 1
         _total_quota_used += 100
 
+        log_with_timestamp(obs.LOG_INFO, f"🌐 [API] Making HTTP request for live streams: {channel_id}")
+
         q1 = urllib.parse.urlencode({
             "part": "id",
             "channelId": channel_id,
@@ -324,6 +352,8 @@ def get_video_id_api(channel_input, api_key):
 
             _api_call_count += 1
             _total_quota_used += 100
+
+            log_with_timestamp(obs.LOG_INFO, f"🌐 [API] Making HTTP request for video details: {video_id}")
 
             q2 = urllib.parse.urlencode({"part": "liveStreamingDetails", "id": video_id, "key": api_key})
             with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/videos?{q2}", timeout=20, context=context) as r:
