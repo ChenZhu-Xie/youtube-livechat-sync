@@ -15,11 +15,11 @@ BROWSER_SOURCE = ""
 COMPUTER_NAME = ""
 WRITE_LOG_PATH = ""
 READ_LOG_PATH = ""
-BASE_INIT_INTERVAL = 5
+BASE_INIT_INTERVAL = 1
 REFRESH_COOLDOWN = 10
 MAX_INIT_ATTEMPTS = 3
-MAX_INIT_INTERVAL = 30
-UPDATE_INTERVAL = 30
+MAX_INIT_INTERVAL = 20
+UPDATE_INTERVAL = 20
 
 _video_id = None
 _popout_chat_url = None
@@ -115,22 +115,22 @@ def refresh_browser_source():
             log_with_timestamp(obs.LOG_INFO, "🧨 [REFRESH] One-shot HARD reload (shutdown) due to connection error")
             obs.obs_data_set_bool(settings, "shutdown", True)
             obs.obs_source_update(src, settings)
-            time.sleep(0.1)
+            time.sleep(1)
             obs.obs_data_set_bool(settings, "shutdown", False)
             obs.obs_source_update(src, settings)
 
         elif action == 1:
             log_with_timestamp(obs.LOG_INFO, "🔄 [REFRESH] One-shot FULL reload (restart_when_active) due to timeout")
-            obs.obs_data_set_bool(settings, "restart_when_active", True)
-            obs.obs_source_update(src, settings)
-            time.sleep(0.1)
             obs.obs_data_set_bool(settings, "restart_when_active", False)
+            obs.obs_source_update(src, settings)
+            time.sleep(1)
+            obs.obs_data_set_bool(settings, "restart_when_active", True)
             obs.obs_source_update(src, settings)
 
         else:
             obs.obs_data_set_bool(settings, "refresh_cache", True)
             obs.obs_source_update(src, settings)
-            time.sleep(0.1)
+            time.sleep(1)
             obs.obs_data_set_bool(settings, "refresh_cache", False)
             obs.obs_source_update(src, settings)
 
@@ -200,7 +200,7 @@ def build_channel_streams_url(channel_input):
 
     return None
 
-def get_video_id_html(channel_input, timeout=30):
+def get_video_id_html(channel_input, timeout=20):
     global _consecutive_failures, _last_request_time
 
     with _request_lock:
@@ -421,7 +421,7 @@ def update_video_id_periodically():
         global _update_request_in_progress
         try:
             _update_request_in_progress = True
-            new_video_id = get_video_id_html(CHANNEL_INPUT, timeout=30)
+            new_video_id = get_video_id_html(CHANNEL_INPUT, timeout=20)
             if new_video_id:
                 set_pending_video_id(new_video_id)
         except Exception:
@@ -446,7 +446,7 @@ def script_properties():
     obs.obs_properties_add_int(p, "refresh_cooldown", "Monitor & Refresh Interval (sec)", 1, 300, 1)
     obs.obs_properties_add_int(p, "max_init_attempts", "Maximum Init Attempts", 1, 20, 1)
     obs.obs_properties_add_int(p, "max_init_interval", "Max Init Retry Interval (sec)", 3, 300, 5)
-    obs.obs_properties_add_int(p, "update_interval", "Video ID Update Interval (sec)", 30, 300, 5)
+    obs.obs_properties_add_int(p, "update_interval", "Video ID Update Interval (sec)", 10, 300, 5)
     return p
 
 def script_defaults(settings):
@@ -581,7 +581,7 @@ def init_live_chat():
 
     try:
         video_id = None
-        video_id = get_video_id_html(CHANNEL_INPUT, timeout=30)
+        video_id = get_video_id_html(CHANNEL_INPUT, timeout=20)
 
         if not video_id and API_KEY:
             video_id = get_video_id_api(CHANNEL_INPUT, API_KEY)
@@ -620,8 +620,8 @@ def init_live_chat():
             _start_update_timer()
 
         obs.timer_add(start_monitor_timer, 2000)
-        obs.timer_add(start_refresh_timer, 5000)
-        obs.timer_add(start_update_timer, 10000)
+        obs.timer_add(start_refresh_timer, 4000)
+        obs.timer_add(start_update_timer, 6000)
 
     except Exception as e:
         log_with_timestamp(obs.LOG_ERROR, f"❌ [INIT] Unexpected error: {e}")
