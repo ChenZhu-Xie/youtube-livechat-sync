@@ -15,8 +15,8 @@ BROWSER_SOURCE = ""
 COMPUTER_NAME = ""
 WRITE_LOG_PATH = ""
 READ_LOG_PATH = ""
-BASE_INIT_INTERVAL = 1
-REFRESH_COOLDOWN = 4
+BASE_INIT_INTERVAL = 5
+REFRESH_COOLDOWN = 10
 MAX_INIT_ATTEMPTS = 3
 MAX_INIT_INTERVAL = 30
 UPDATE_INTERVAL = 30
@@ -184,7 +184,7 @@ def get_video_id_html(channel_input, timeout=30):
             'Upgrade-Insecure-Requests': '1',
         })
 
-        timeout_config = (min(10, timeout//2), timeout)
+        timeout_config = (min(30, timeout//2), timeout)
 
         try:
             with session:
@@ -252,7 +252,7 @@ def handle_to_channel_id_api(handle, api_key):
         })
 
         context = create_ssl_context()
-        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q}", timeout=15, context=context) as r:
+        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q}", timeout=20, context=context) as r:
             data = json.load(r)
 
         items = data.get("items", [])
@@ -294,7 +294,7 @@ def get_video_id_api(channel_input, api_key):
         })
 
         context = create_ssl_context()
-        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q1}", timeout=15, context=context) as r:
+        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q1}", timeout=20, context=context) as r:
             data = json.load(r)
 
         items = data.get("items", [])
@@ -305,7 +305,7 @@ def get_video_id_api(channel_input, api_key):
             _total_quota_used += 100
 
             q2 = urllib.parse.urlencode({"part": "liveStreamingDetails", "id": video_id, "key": api_key})
-            with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/videos?{q2}", timeout=15, context=context) as r:
+            with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/videos?{q2}", timeout=20, context=context) as r:
                 data = json.load(r)
 
             details = data["items"][0].get("liveStreamingDetails", {})
