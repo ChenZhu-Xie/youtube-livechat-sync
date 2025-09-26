@@ -15,7 +15,7 @@ BROWSER_SOURCE = ""
 COMPUTER_NAME = ""
 WRITE_LOG_PATH = ""
 READ_LOG_PATH = ""
-BASE_INIT_INTERVAL = 10
+BASE_INIT_INTERVAL = 1
 REFRESH_COOLDOWN = 20
 MAX_INIT_ATTEMPTS = 3
 MAX_INIT_INTERVAL = 40
@@ -305,18 +305,22 @@ def handle_to_channel_id_api(handle, api_key):
         })
 
         context = create_ssl_context()
-        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q}", timeout=20, context=context) as r:
+        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q}", timeout=30, context=context) as r:
             data = json.load(r)
 
         items = data.get("items", [])
         if items:
             channel_id = items[0]["snippet"]["channelId"]
             log_with_timestamp(obs.LOG_INFO, f"🔍 [API] Converted handle to channel ID: {channel_id}")
+            time.sleep(1)
             return channel_id
 
+        time.sleep(1)
         return None
     except Exception as e:
         log_with_timestamp(obs.LOG_ERROR, f"❌ [API] Handle conversion failed: {e}")
+
+        time.sleep(1)
         return None
 
 def get_video_id_api(channel_input, api_key):
@@ -349,8 +353,10 @@ def get_video_id_api(channel_input, api_key):
         })
 
         context = create_ssl_context()
-        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q1}", timeout=20, context=context) as r:
+        with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/search?{q1}", timeout=30, context=context) as r:
             data = json.load(r)
+
+        time.sleep(1)
 
         items = data.get("items", [])
         if items:
@@ -362,8 +368,10 @@ def get_video_id_api(channel_input, api_key):
             log_with_timestamp(obs.LOG_INFO, f"🌐 [API] Making HTTP request for video details: {video_id}")
 
             q2 = urllib.parse.urlencode({"part": "liveStreamingDetails", "id": video_id, "key": api_key})
-            with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/videos?{q2}", timeout=20, context=context) as r:
+            with urllib.request.urlopen(f"https://www.googleapis.com/youtube/v3/videos?{q2}", timeout=30, context=context) as r:
                 data = json.load(r)
+
+            time.sleep(1)
 
             details = data["items"][0].get("liveStreamingDetails", {})
             if details.get("activeLiveChatId"):
@@ -373,6 +381,7 @@ def get_video_id_api(channel_input, api_key):
         return None
     except Exception as e:
         log_with_timestamp(obs.LOG_ERROR, f"❌ [API] Error: {e}")
+        time.sleep(1)
         return None
 
 def get_current_video_id():
