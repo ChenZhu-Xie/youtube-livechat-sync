@@ -2,7 +2,7 @@
 
 Automated YouTube Live Chat URL management and 🔄 cross-device stream link sharing for OBS Studio.
 
-https://github.com/user-attachments/assets/f654f7d6-8df2-49e5-a839-1328c0a9c5d4
+https://github.com/user-attachments/assets/725c0dfa-7d9b-4e5f-98f2-8cec283508a5
 
 1. **Usage**:
    - *[Tutorial 1](https://youtu.be/xXMUXBz1P74)*, *[Tutorial 2](https://youtu.be/XyUmUvaArpQ)*
