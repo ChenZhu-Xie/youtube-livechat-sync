@@ -203,7 +203,7 @@ Stream data is logged in JSON Lines format:
 
 Contributions welcome! Please feel free to submit issues, feature requests, or pull requests. Focus areas:
 - Currently, the initial acquisition of HTML methods is a bit slow, but the API methods are fast.
-- When just clicked on the live broadcast, the script and the push stream were started at the same time, which may be a bit stuck.
+- ~~When just clicked on the live broadcast, the script and the push stream were started at the same time, which may be a bit stuck. (This problem should no longer exist now.)~~
 - Long-term polling HTML method update id may over-consuming upload bandwidth? (But it's not a matter for live broadcasters?)
 - More stable timed polling: Does the logic of HTML request timeout need to set the maximum time limit?
 - Real multithreaded multi-timer in non-python?
