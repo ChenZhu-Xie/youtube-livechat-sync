@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 YouTube Live Chat Manager - Sequential init, main-thread timers, main-thread OBS ops
-- 主线程启动/停止定时器
+- 主线程启动/停止定时器（修复：确保 timer_remove 使用稳定回调引用 + 停止后不再打印 fired 日志）
 - 每个 start* 和回调都有明确日志
 - 统一日志语义
 - OBS 源相关 API 只在主线程执行（通过 MainThreadDispatcher 调度）
@@ -27,41 +27,29 @@ import obspython as obs
 # -----------------------
 # Defaults
 # -----------------------
-DEFAULT_BASE_INIT_INTERVAL = 5
-DEFAULT_REFRESH_COOLDOWN = 15
+DEFAULT_BASE_INIT_INTERVAL = 1
+DEFAULT_REFRESH_COOLDOWN = 12
 DEFAULT_MAX_INIT_ATTEMPTS = 3
-DEFAULT_MAX_INIT_INTERVAL = 33
-DEFAULT_UPDATE_INTERVAL = 33
+DEFAULT_MAX_INIT_INTERVAL = 23
+DEFAULT_UPDATE_INTERVAL = 23
 
 SHARE_LINK_PATTERN = re.compile(r'https://youtube\.com/live/[a-zA-Z0-9_-]+\?feature=share')
 
 # -----------------------
-# Logger (emoji + thread name)
+# Logger (ms + global seq + thread name)
 # -----------------------
 class Logger:
     def __init__(self):
         self._lock = threading.Lock()
-        self._last_log_time = 0
-        self._queue = []
-
-    def _emit(self, level, message):
-        ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        thread_name = threading.current_thread().name
-        formatted_msg = f"[{ts}][{thread_name}] {message}"
-        obs.script_log(level, formatted_msg)
+        self._seq = 0  # global monotonic sequence
 
     def log(self, level, message):
         with self._lock:
-            now = time.time()
-            if now - self._last_log_time < 0.05:
-                self._queue.append((level, message))
-                return
-            self._emit(level, message)
-            self._last_log_time = now
-            if self._queue:
-                lvl, msg = self._queue.pop(0)
-                self._emit(lvl, msg)
-                self._last_log_time = time.time()
+            self._seq += 1
+            ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]  # ms precision
+            thread_name = threading.current_thread().name
+            formatted_msg = f"[{ts}][{thread_name}][#{self._seq:06d}] {message}"
+            obs.script_log(level, formatted_msg)
 
 logger = Logger()
 
@@ -73,13 +61,13 @@ class MainThreadDispatcher:
         self.interval_ms = int(interval_ms)
         self.max_tasks_per_tick = max_tasks_per_tick
         self._queue_lock = threading.Lock()
-        self._queue = deque()  # (run_at_ts, label, callable)
+        self._queue = deque()  # (run_at_ts, label, callable, task_id, queued_at)
         self._active = False
+        self._task_seq = 0
 
     def _is_important(self, label):
         if not label:
             return False
-        # 仅报告关键操作，降低 Dummy-1 上的日志噪音
         if label.startswith(("start_", "stop_", "debug")):
             return True
         if label in ("init:apply_url", "apply_url_to_source"):
@@ -109,33 +97,34 @@ class MainThreadDispatcher:
         """Thread-safe: schedule fn to run on main thread after delay_ms."""
         run_at = time.time() + max(0, delay_ms) / 1000.0
         with self._queue_lock:
-            self._queue.append((run_at, label, fn))
+            self._task_seq += 1
+            task_id = self._task_seq
+            self._queue.append((run_at, label, fn, task_id, time.time()))
         if self._is_important(label):
-            logger.log(obs.LOG_INFO, f"📌 [DISPATCH] queued: {label}, delay={delay_ms}ms")
+            logger.log(obs.LOG_INFO, f"📌 [DISPATCH] queued#{task_id}: {label}, delay={delay_ms}ms")
+        return task_id
 
     def _pump(self):
         """Main thread"""
         now = time.time()
-        executed = 0
         items = []
-        # gather due items
+        executed = 0
         with self._queue_lock:
             while self._queue and executed < self.max_tasks_per_tick:
-                run_at, label, fn = self._queue[0]
+                run_at, label, fn, task_id, queued_at = self._queue[0]
                 if run_at > now:
                     break
                 self._queue.popleft()
-                items.append((label, fn))
+                items.append((label, fn, task_id, queued_at))
                 executed += 1
-        # run outside lock
-        for label, fn in items:
+        for label, fn, task_id, queued_at in items:
             try:
-                # 仅在关键任务上记录运行日志
                 if self._is_important(label):
-                    logger.log(obs.LOG_INFO, f"▶️ [DISPATCH] running: {label}")
+                    wait_ms = int((time.time() - queued_at) * 1000)
+                    logger.log(obs.LOG_INFO, f"▶️ [DISPATCH] running#{task_id}: {label}, waited={wait_ms}ms")
                 fn()
             except Exception as e:
-                logger.log(obs.LOG_ERROR, f"❌ [DISPATCH] task error: {e}")
+                logger.log(obs.LOG_ERROR, f"❌ [DISPATCH] task#{task_id} error: {e}")
 
 # global dispatcher
 _dispatcher = MainThreadDispatcher()
@@ -187,7 +176,7 @@ class YouTubeService:
             return f"https://www.youtube.com/@{c}/streams"
         return f"https://www.youtube.com/channel/{c}/streams"
 
-    def get_video_id_html(self, channel_input, timeout=33):
+    def get_video_id_html(self, channel_input, timeout=23):
         t, c = self.normalize_channel_input(channel_input)
         try:
             streams_url = self.build_streams_url(channel_input)
@@ -222,14 +211,13 @@ class YouTubeService:
             )
             resp.raise_for_status()
 
-            # 解析可能的 videoId 字段
             m = re.search(r'"videoRenderer":\{"videoId":"([^"]+)"', text)
             if not m:
                 m = re.search(r'"gridVideoRenderer":\{"videoId":"([^"]+)"', text)
 
             if m:
                 video_id = m.group(1)
-                logger.log(obs.LOG_INFO, f"✅ [HTML] parsed videoId: {video_id}")
+                logger.log(obs.LOG_INFO, f"🟢 [HTML] videoId found: {video_id}")
                 self.consecutive_failures = 0
                 return video_id
 
@@ -350,7 +338,7 @@ class YouTubeService:
                     has_chat = bool(details.get("activeLiveChatId"))
                     logger.log(obs.LOG_INFO, f"🔎 [API] activeLiveChatId={has_chat}")
                     if has_chat:
-                        logger.log(obs.LOG_INFO, f"✅ [API] videoId: {video_id}")
+                        logger.log(obs.LOG_INFO, f"🔵 [API] videoId: {video_id}")
                         return video_id
             logger.log(obs.LOG_INFO, "ℹ️ [API] no live video found or missing activeLiveChatId")
             return None
@@ -398,7 +386,7 @@ class BrowserSourceManager:
             return False
         try:
             self._set_setting_string(src, "url", url)
-            logger.log(obs.LOG_INFO, f"🔗 [OBS] url applied: {url}")
+            logger.log(obs.LOG_INFO, f"✅ [OBS] url applied: {url}")
             return True
         finally:
             obs.obs_source_release(src)
@@ -414,7 +402,7 @@ class BrowserSourceManager:
         def finish():
             with self._lock:
                 self._refresh_in_progress = False
-            logger.log(obs.LOG_INFO, "✅ [REFRESH] done")
+            logger.log(obs.LOG_INFO, "♻️ [REFRESH] complete")
 
         src = self._get_src()
         if not src:
@@ -625,6 +613,11 @@ class LiveChatManager:
         self._update_timer_active = False
         self._refresh_timer_active = False
 
+        # persistent timer callback references (fix: ensure timer_remove matches the added callable)
+        self._monitor_timer_fn = self._monitor_callback
+        self._update_timer_fn = self._update_callback
+        self._refresh_timer_fn = self._refresh_callback
+
         # internal flags
         self._update_lock = threading.Lock()
         self._update_request_in_progress = False
@@ -676,8 +669,9 @@ class LiveChatManager:
 
         # schedule OBS apply on main
         def do_apply():
-            self.browser_mgr.apply_url_to_source_main(popout_url)
-            logger.log(obs.LOG_INFO, f"🔄 [UPDATE] videoId applied: {old} -> {vid}")
+            ok = self.browser_mgr.apply_url_to_source_main(popout_url)
+            if ok:
+                logger.log(obs.LOG_INFO, f"🔄 [UPDATE] videoId applied: {old} -> {vid}")
         _dispatcher.post(do_apply, label="apply_url_to_source")
 
         # write share on background
@@ -716,7 +710,7 @@ class LiveChatManager:
             # Step 1: HTML
             try:
                 logger.log(obs.LOG_INFO, "🔎 [INIT/HTML] probing streams page for live videoId...")
-                video_id = self.yt_service.get_video_id_html(self.channel_input, timeout=33)
+                video_id = self.yt_service.get_video_id_html(self.channel_input, timeout=23)
             except Exception as e:
                 logger.log(obs.LOG_ERROR, f"❌ [INIT] HTML unexpected: {e}")
 
@@ -741,14 +735,14 @@ class LiveChatManager:
                     lambda: self.browser_mgr.apply_url_to_source_main(popout_url),
                     label="init:apply_url"
                 )
-                logger.log(obs.LOG_INFO, f"🎮 [INIT] chat prepared: {video_id}")
+                logger.log(obs.LOG_INFO, f"🟢 [INIT] chat prepared: {video_id}")
 
                 # Write share on background
                 threading.Thread(target=lambda: self.log_mgr.write_share(video_id, popout_url),
                                  daemon=True, name="ShareWriteWorker").start()
 
                 self._inited = True
-                logger.log(obs.LOG_INFO, f"🎉 [INIT] success! quota={self.yt_service.total_quota_used}")
+                logger.log(obs.LOG_INFO, f"🏁 [INIT] success! quota={self.yt_service.total_quota_used}")
 
                 # Start timers on main (delayed)
                 _dispatcher.post(self._start_monitor_timer_main, delay_ms=500, label="start_monitor_timer")
@@ -763,7 +757,7 @@ class LiveChatManager:
 
             elapsed = time.time() - start_time
             wait_time = max(current_interval - elapsed, 0.5)
-            logger.log(obs.LOG_INFO, f"🔄 [INIT] attempt {attempt_count} failed, retry in {wait_time:.1f}s")
+            logger.log(obs.LOG_INFO, f"⏭️ [INIT] attempt {attempt_count} failed, retry in {wait_time:.1f}s")
             if self._init_stop_event.wait(timeout=wait_time) or self._shutdown_event.is_set() or not self._streaming_active:
                 break
 
@@ -786,8 +780,9 @@ class LiveChatManager:
                 self._init_worker_thread.join(timeout=2)
             logger.log(obs.LOG_INFO, "🧵 [WORKER] InitWorker stopped")
 
-    # ---- Timers: start/stop only on main thread ----
+    # ---- Timers: callbacks (guarded: no log after stop) ----
     def _monitor_callback(self):
+        # Guard: don't log if inactive/stopped
         if not self._streaming_active or self._shutdown_event.is_set():
             return
         logger.log(obs.LOG_INFO, "⏱️ [CALLBACK] monitor fired")
@@ -807,14 +802,16 @@ class LiveChatManager:
         threading.Thread(target=worker, daemon=True).start()
 
     def _update_callback(self):
-        logger.log(obs.LOG_INFO, "⏱️ [CALLBACK] update fired")
+        # Guard: check first, then log
         with self._update_lock:
             if not self._streaming_active or not self._inited or self._shutdown_event.is_set():
                 return
             if self._update_request_in_progress:
-                logger.log(obs.LOG_INFO, "⏳ [UPDATE] skip (in-progress)")
+                logger.log(obs.LOG_INFO, "⏭️ [UPDATE] skip (in-progress)")
                 return
             self._update_request_in_progress = True
+
+        logger.log(obs.LOG_INFO, "⏱️ [CALLBACK] update fired")
 
         def worker():
             threading.current_thread().name = "UpdateWorker"
@@ -823,15 +820,22 @@ class LiveChatManager:
                     return
                 # 详细的定时 HTML 询问日志
                 streams_url = self.yt_service.build_streams_url(self.channel_input)
-                logger.log(obs.LOG_INFO, f"🔎 [UPDATE/HTML] probing: url={streams_url}")
-                new_video_id = self.yt_service.get_video_id_html(self.channel_input, timeout=33)
+                curr = self.get_current_video_id()
+                logger.log(obs.LOG_INFO, f"🔎 [UPDATE/HTML] probing: url={streams_url}, current={curr}")
+                t1 = time.time()
+                new_video_id = self.yt_service.get_video_id_html(self.channel_input, timeout=23)
+                html_elapsed = time.time() - t1
                 if self._shutdown_event.is_set() or not self._streaming_active:
                     return
+                logger.log(obs.LOG_INFO, f"ℹ️ [UPDATE/HTML] probe done in {html_elapsed:.2f}s")
                 if new_video_id:
-                    logger.log(obs.LOG_INFO, f"✅ [UPDATE/HTML] got videoId: {new_video_id} (pending apply)")
-                    self.set_pending_video_id(new_video_id)
+                    if new_video_id != curr:
+                        logger.log(obs.LOG_INFO, f"🟢 [UPDATE/HTML] got new videoId: {new_video_id} (pending apply)")
+                        self.set_pending_video_id(new_video_id)
+                    else:
+                        logger.log(obs.LOG_INFO, "ℹ️ [UPDATE/HTML] same videoId, no change")
                 else:
-                    logger.log(obs.LOG_INFO, "ℹ️ [UPDATE/HTML] no change")
+                    logger.log(obs.LOG_INFO, "ℹ️ [UPDATE/HTML] no live videoId")
             except Exception as e:
                 logger.log(obs.LOG_WARNING, f"⚠️ [UPDATE] worker error: {e}")
             finally:
@@ -841,9 +845,10 @@ class LiveChatManager:
         threading.Thread(target=worker, daemon=True).start()
 
     def _refresh_callback(self):
-        logger.log(obs.LOG_INFO, "⏱️ [CALLBACK] refresh fired")
+        # Guard: don't log if inactive/stopped
         if self._shutdown_event.is_set() or not self._inited or not self._streaming_active:
             return
+        logger.log(obs.LOG_INFO, "⏱️ [CALLBACK] refresh fired")
         current_id = self.get_current_video_id()
         if not current_id:
             return
@@ -851,21 +856,21 @@ class LiveChatManager:
         # Main thread, call directly
         self.browser_mgr.refresh_main(expected_url=expected)
 
-    # wrappers to ensure timers are added/removed on main thread
+    # ---- Timer start/stop only on main thread (use stable callback refs) ----
     def _start_monitor_timer(self):
         logger.log(obs.LOG_INFO, "🕒 [TIMER] request start_monitor")
         _dispatcher.post(self._start_monitor_timer_main, label="start_monitor_timer")
 
     def _start_monitor_timer_main(self):
         if not self._monitor_timer_active:
-            obs.timer_add(self._monitor_callback, int(self.refresh_cooldown * 1000))
+            obs.timer_add(self._monitor_timer_fn, int(self.refresh_cooldown * 1000))
             self._monitor_timer_active = True
-            logger.log(obs.LOG_INFO, f"🕒 [TIMER] monitor added ({int(self.refresh_cooldown * 1000)}ms)")
+            logger.log(obs.LOG_INFO, f"🕒 [TIMER] monitor added ({int(self.refresh_cooldown)}s)")
 
     def _stop_monitor_timer_main(self):
         if self._monitor_timer_active:
             try:
-                obs.timer_remove(self._monitor_callback)
+                obs.timer_remove(self._monitor_timer_fn)
             except Exception as e:
                 logger.log(obs.LOG_WARNING, f"⚠️ [TIMER] monitor remove error: {e}")
             self._monitor_timer_active = False
@@ -877,14 +882,14 @@ class LiveChatManager:
 
     def _start_update_timer_main(self):
         if not self._update_timer_active:
-            obs.timer_add(self._update_callback, int(self.update_interval * 1000))
+            obs.timer_add(self._update_timer_fn, int(self.update_interval * 1000))
             self._update_timer_active = True
-            logger.log(obs.LOG_INFO, f"🕒 [TIMER] update added ({int(self.update_interval * 1000)}ms)")
+            logger.log(obs.LOG_INFO, f"🕒 [TIMER] update added ({int(self.update_interval)}s)")
 
     def _stop_update_timer_main(self):
         if self._update_timer_active:
             try:
-                obs.timer_remove(self._update_callback)
+                obs.timer_remove(self._update_timer_fn)
             except Exception as e:
                 logger.log(obs.LOG_WARNING, f"⚠️ [TIMER] update remove error: {e}")
             self._update_timer_active = False
@@ -896,14 +901,14 @@ class LiveChatManager:
 
     def _start_refresh_timer_main(self):
         if not self._refresh_timer_active:
-            obs.timer_add(self._refresh_callback, 10000)
+            obs.timer_add(self._refresh_timer_fn, 10000)
             self._refresh_timer_active = True
-            logger.log(obs.LOG_INFO, "🕒 [TIMER] refresh added (10000ms)")
+            logger.log(obs.LOG_INFO, "🕒 [TIMER] refresh added (10s)")
 
     def _stop_refresh_timer_main(self):
         if self._refresh_timer_active:
             try:
-                obs.timer_remove(self._refresh_callback)
+                obs.timer_remove(self._refresh_timer_fn)
             except Exception as e:
                 logger.log(obs.LOG_WARNING, f"⚠️ [TIMER] refresh remove error: {e}")
             self._refresh_timer_active = False
@@ -936,6 +941,7 @@ class LiveChatManager:
         self._start_init_worker()
 
     def on_stream_stopped(self):
+        # 停止一切（仅依据 OBS 推流状态）
         if not self._streaming_active:
             # 即使标志位已是 False，仍确保彻底停止
             self._shutdown_event.set()
@@ -943,11 +949,9 @@ class LiveChatManager:
             _dispatcher.stop()
             logger.log(obs.LOG_INFO, f"🛑 [EVENT] streaming stopped (forced), quota={self.yt_service.total_quota_used}")
             return
-        # 停止一切（仅依据 OBS 推流状态）
         self._streaming_active = False
         self._shutdown_event.set()
         self._stop_all_main()
-        # 终止调度器，清空任务队列
         _dispatcher.stop()
         logger.log(obs.LOG_INFO, f"🛑 [EVENT] streaming stopped, quota={self.yt_service.total_quota_used}")
 
