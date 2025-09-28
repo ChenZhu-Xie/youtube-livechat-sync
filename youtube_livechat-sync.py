@@ -1,14 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 YouTube Live Chat Manager - Sequential init, main-thread timers, main-thread OBS ops
-- 主线程启动/停止定时器（修复：确保 timer_remove 使用稳定回调引用 + 停止后不再打印 fired 日志）
-- 每个 start* 和回调都有明确日志
-- 统一日志语义
-- OBS 源相关 API 只在主线程执行（通过 MainThreadDispatcher 调度）
-- 刷新与应用 URL 均非阻塞主线程（分步调度，无 sleep 阻塞）
-- 当 OBS 停止推流时，立即终止脚本内的调度器与工作线程（不再根据 YouTube 直播状态判断）
-- init 阶段 HTML/API 查询与定时 HTML 查询提供更丰富的细节日志
-- 降低主线程（Dummy-1）调度日志细度，仅在重要事件时提示
 """
 import os
 import re
@@ -24,9 +16,6 @@ from collections import deque
 import requests
 import obspython as obs
 
-# -----------------------
-# Defaults
-# -----------------------
 DEFAULT_BASE_INIT_INTERVAL = 1
 DEFAULT_REFRESH_COOLDOWN = 12
 DEFAULT_MAX_INIT_ATTEMPTS = 3
@@ -35,33 +24,27 @@ DEFAULT_UPDATE_INTERVAL = 23
 
 SHARE_LINK_PATTERN = re.compile(r'https://youtube\.com/live/[a-zA-Z0-9_-]+\?feature=share')
 
-# -----------------------
-# Logger (ms + global seq + thread name)
-# -----------------------
 class Logger:
     def __init__(self):
         self._lock = threading.Lock()
-        self._seq = 0  # global monotonic sequence
+        self._seq = 0
 
     def log(self, level, message):
         with self._lock:
             self._seq += 1
-            ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]  # ms precision
+            ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
             thread_name = threading.current_thread().name
             formatted_msg = f"[{ts}][{thread_name}][#{self._seq:06d}] {message}"
             obs.script_log(level, formatted_msg)
 
 logger = Logger()
 
-# -----------------------
-# Main Thread Dispatcher (run small tasks on OBS main thread)
-# -----------------------
 class MainThreadDispatcher:
     def __init__(self, interval_ms=33, max_tasks_per_tick=16):
         self.interval_ms = int(interval_ms)
         self.max_tasks_per_tick = max_tasks_per_tick
         self._queue_lock = threading.Lock()
-        self._queue = deque()  # (run_at_ts, label, callable, task_id, queued_at)
+        self._queue = deque()
         self._active = False
         self._task_seq = 0
 
@@ -94,7 +77,6 @@ class MainThreadDispatcher:
         logger.log(obs.LOG_INFO, "🧰 [DISPATCH] stopped")
 
     def post(self, fn, *, delay_ms=0, label=None):
-        """Thread-safe: schedule fn to run on main thread after delay_ms."""
         run_at = time.time() + max(0, delay_ms) / 1000.0
         with self._queue_lock:
             self._task_seq += 1
@@ -105,7 +87,6 @@ class MainThreadDispatcher:
         return task_id
 
     def _pump(self):
-        """Main thread"""
         now = time.time()
         items = []
         executed = 0
@@ -126,12 +107,8 @@ class MainThreadDispatcher:
             except Exception as e:
                 logger.log(obs.LOG_ERROR, f"❌ [DISPATCH] task#{task_id} error: {e}")
 
-# global dispatcher
 _dispatcher = MainThreadDispatcher()
 
-# -----------------------
-# YouTubeService: HTML + API fallback
-# -----------------------
 class YouTubeService:
     USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 
@@ -286,7 +263,6 @@ class YouTubeService:
             return None
 
     def get_video_id_api(self, channel_input):
-        """Strictly sequential: will not be called until HTML step finished."""
         try:
             t, clean = self.normalize_channel_input(channel_input)
             if not clean:
@@ -347,15 +323,12 @@ class YouTubeService:
             time.sleep(1)
             return None
 
-# -----------------------
-# BrowserSourceManager: OBS source ops (main thread only, non-blocking)
-# -----------------------
 class BrowserSourceManager:
     def __init__(self, source_name):
         self.source_name = source_name
         self._refresh_in_progress = False
         self._lock = threading.Lock()
-        self.next_refresh_action = 0  # 0: cache refresh, 1: full reload, 2: hard reload
+        self.next_refresh_action = 0
 
     def _get_src(self):
         return obs.obs_get_source_by_name(self.source_name)
@@ -377,7 +350,6 @@ class BrowserSourceManager:
             obs.obs_data_release(settings)
 
     def apply_url_to_source_main(self, url):
-        """Main-thread only, quick, non-blocking."""
         if not self.source_name or not url:
             return False
         src = self._get_src()
@@ -392,7 +364,6 @@ class BrowserSourceManager:
             obs.obs_source_release(src)
 
     def refresh_main(self, expected_url=None):
-        """Main-thread only. Non-blocking: use dispatcher to split steps."""
         with self._lock:
             if self._refresh_in_progress:
                 logger.log(obs.LOG_INFO, "⏳ [REFRESH] skip (in-progress)")
@@ -411,7 +382,6 @@ class BrowserSourceManager:
             return
 
         try:
-            # Correct URL if needed
             if expected_url:
                 settings = obs.obs_source_get_settings(src)
                 try:
@@ -426,7 +396,6 @@ class BrowserSourceManager:
             self.next_refresh_action = 0
 
             if action == 0:
-                # refresh_cache true -> false (deferred)
                 def step1():
                     s = self._get_src()
                     if not s:
@@ -437,7 +406,6 @@ class BrowserSourceManager:
                         logger.log(obs.LOG_INFO, "🔄 [REFRESH] cache=true")
                     finally:
                         obs.obs_source_release(s)
-                    # step2 turn off
                     def step2():
                         s2 = self._get_src()
                         if not s2:
@@ -453,7 +421,6 @@ class BrowserSourceManager:
                 _dispatcher.post(step1, label="refresh_cache:on")
 
             else:
-                # full/hard reload via restart_when_active false -> true
                 def step1():
                     s = self._get_src()
                     if not s:
@@ -481,9 +448,6 @@ class BrowserSourceManager:
         finally:
             obs.obs_source_release(src)
 
-# -----------------------
-# LogManager
-# -----------------------
 class LogManager:
     def __init__(self, write_log_path, read_log_path, computer_name):
         self.write_log_path = write_log_path or ""
@@ -569,12 +533,8 @@ class LogManager:
             logger.log(obs.LOG_WARNING, f"⚠️ [REMOTE] read error: {e}")
             return None
 
-# -----------------------
-# LiveChatManager
-# -----------------------
 class LiveChatManager:
     def __init__(self):
-        # configuration
         self.api_key = ""
         self.channel_input = ""
         self.browser_source_name = ""
@@ -587,12 +547,10 @@ class LiveChatManager:
         self.max_init_interval = DEFAULT_MAX_INIT_INTERVAL
         self.update_interval = DEFAULT_UPDATE_INTERVAL
 
-        # services
         self.yt_service = YouTubeService(api_key=None)
         self.browser_mgr = BrowserSourceManager(source_name="")
         self.log_mgr = LogManager("", "", "")
 
-        # runtime state
         self._video_id = None
         self._popout_url = None
         self._pending_video_id = None
@@ -601,24 +559,19 @@ class LiveChatManager:
         self._inited = False
         self._streaming_active = False
 
-        # shutdown control
         self._shutdown_event = threading.Event()
 
-        # init worker state
         self._init_worker_thread = None
         self._init_stop_event = threading.Event()
 
-        # timers state
         self._monitor_timer_active = False
         self._update_timer_active = False
         self._refresh_timer_active = False
 
-        # persistent timer callback references (fix: ensure timer_remove matches the added callable)
         self._monitor_timer_fn = self._monitor_callback
         self._update_timer_fn = self._update_callback
         self._refresh_timer_fn = self._refresh_callback
 
-        # internal flags
         self._update_lock = threading.Lock()
         self._update_request_in_progress = False
 
@@ -635,12 +588,10 @@ class LiveChatManager:
         self.max_init_interval = obs.obs_data_get_int(settings, "max_init_interval") or DEFAULT_MAX_INIT_INTERVAL
         self.update_interval = obs.obs_data_get_int(settings, "update_interval") or DEFAULT_UPDATE_INTERVAL
 
-        # recreate services
         self.yt_service = YouTubeService(api_key=self.api_key if self.api_key else None)
         self.browser_mgr = BrowserSourceManager(source_name=self.browser_source_name)
         self.log_mgr = LogManager(self.write_log_path, self.read_log_path, self.computer_name)
 
-    # video id accessors
     def get_current_video_id(self):
         with self._video_lock:
             return self._pending_video_id or self._video_id
@@ -656,7 +607,6 @@ class LiveChatManager:
             self._pending_video_id = video_id
 
     def apply_pending_video_id(self):
-        """No OBS calls here. Schedule OBS ops on main thread."""
         with self._video_lock:
             if not self._pending_video_id or self._pending_video_id == self._video_id:
                 return False
@@ -667,14 +617,12 @@ class LiveChatManager:
             popout_url = self._popout_url
             vid = self._video_id
 
-        # schedule OBS apply on main
         def do_apply():
             ok = self.browser_mgr.apply_url_to_source_main(popout_url)
             if ok:
                 logger.log(obs.LOG_INFO, f"🔄 [UPDATE] videoId applied: {old} -> {vid}")
         _dispatcher.post(do_apply, label="apply_url_to_source")
 
-        # write share on background
         threading.Thread(target=lambda: self.log_mgr.write_share(vid, popout_url),
                          daemon=True, name="ShareWriteWorker").start()
         return True
@@ -685,7 +633,6 @@ class LiveChatManager:
         interval = base_interval * (1.5 ** min(failures, 5))
         return min(interval, max_interval)
 
-    # ---- Init worker (sequential) ----
     def _init_worker_main(self):
         logger.log(obs.LOG_INFO, "🧵 [WORKER] InitWorker started")
         attempt_count = 0
@@ -707,14 +654,12 @@ class LiveChatManager:
             start_time = time.time()
             video_id = None
 
-            # Step 1: HTML
             try:
                 logger.log(obs.LOG_INFO, "🔎 [INIT/HTML] probing streams page for live videoId...")
                 video_id = self.yt_service.get_video_id_html(self.channel_input, timeout=23)
             except Exception as e:
                 logger.log(obs.LOG_ERROR, f"❌ [INIT] HTML unexpected: {e}")
 
-            # Step 2: API fallback (only if HTML failed and API key provided)
             if not video_id and self.api_key and not self._shutdown_event.is_set():
                 try:
                     logger.log(obs.LOG_INFO, "🔁 [INIT/API] HTML failed -> trying API fallback")
@@ -725,36 +670,28 @@ class LiveChatManager:
             if self._shutdown_event.is_set() or not self._streaming_active:
                 break
 
-            # Step 3: apply or retry
             if video_id:
                 self.set_primary_video_id(video_id)
                 popout_url = f"https://www.youtube.com/live_chat?is_popout=1&v={video_id}"
 
-                # Apply URL on main
                 _dispatcher.post(
                     lambda: self.browser_mgr.apply_url_to_source_main(popout_url),
                     label="init:apply_url"
                 )
                 logger.log(obs.LOG_INFO, f"🟢 [INIT] chat prepared: {video_id}")
 
-                # Write share on background
                 threading.Thread(target=lambda: self.log_mgr.write_share(video_id, popout_url),
                                  daemon=True, name="ShareWriteWorker").start()
 
                 self._inited = True
                 logger.log(obs.LOG_INFO, f"🏁 [INIT] success! quota={self.yt_service.total_quota_used}")
 
-                # Start timers on main (delayed)
                 _dispatcher.post(self._start_monitor_timer_main, delay_ms=500, label="start_monitor_timer")
                 _dispatcher.post(self._start_refresh_timer_main, delay_ms=900, label="start_refresh_timer")
                 _dispatcher.post(self._start_update_timer_main, delay_ms=1300, label="start_update_timer")
                 break
 
-            # failure path
             consecutive_failures += 1
-            if consecutive_failures >= 3:
-                self.browser_mgr.next_refresh_action = max(self.browser_mgr.next_refresh_action, 1)
-
             elapsed = time.time() - start_time
             wait_time = max(current_interval - elapsed, 0.5)
             logger.log(obs.LOG_INFO, f"⏭️ [INIT] attempt {attempt_count} failed, retry in {wait_time:.1f}s")
@@ -780,9 +717,7 @@ class LiveChatManager:
                 self._init_worker_thread.join(timeout=2)
             logger.log(obs.LOG_INFO, "🧵 [WORKER] InitWorker stopped")
 
-    # ---- Timers: callbacks (guarded: no log after stop) ----
     def _monitor_callback(self):
-        # Guard: don't log if inactive/stopped
         if not self._streaming_active or self._shutdown_event.is_set():
             return
         logger.log(obs.LOG_INFO, "⏱️ [CALLBACK] monitor fired")
@@ -802,7 +737,6 @@ class LiveChatManager:
         threading.Thread(target=worker, daemon=True).start()
 
     def _update_callback(self):
-        # Guard: check first, then log
         with self._update_lock:
             if not self._streaming_active or not self._inited or self._shutdown_event.is_set():
                 return
@@ -818,7 +752,6 @@ class LiveChatManager:
             try:
                 if self._shutdown_event.is_set() or not self._streaming_active:
                     return
-                # 详细的定时 HTML 询问日志
                 streams_url = self.yt_service.build_streams_url(self.channel_input)
                 curr = self.get_current_video_id()
                 logger.log(obs.LOG_INFO, f"🔎 [UPDATE/HTML] probing: url={streams_url}, current={curr}")
@@ -832,10 +765,13 @@ class LiveChatManager:
                     if new_video_id != curr:
                         logger.log(obs.LOG_INFO, f"🟢 [UPDATE/HTML] got new videoId: {new_video_id} (pending apply)")
                         self.set_pending_video_id(new_video_id)
+                        self.browser_mgr.next_refresh_action = 0
                     else:
                         logger.log(obs.LOG_INFO, "ℹ️ [UPDATE/HTML] same videoId, no change")
+                        self.browser_mgr.next_refresh_action = 0
                 else:
                     logger.log(obs.LOG_INFO, "ℹ️ [UPDATE/HTML] no live videoId")
+                    self.browser_mgr.next_refresh_action = 1
             except Exception as e:
                 logger.log(obs.LOG_WARNING, f"⚠️ [UPDATE] worker error: {e}")
             finally:
@@ -845,7 +781,6 @@ class LiveChatManager:
         threading.Thread(target=worker, daemon=True).start()
 
     def _refresh_callback(self):
-        # Guard: don't log if inactive/stopped
         if self._shutdown_event.is_set() or not self._inited or not self._streaming_active:
             return
         logger.log(obs.LOG_INFO, "⏱️ [CALLBACK] refresh fired")
@@ -853,10 +788,8 @@ class LiveChatManager:
         if not current_id:
             return
         expected = f"https://www.youtube.com/live_chat?is_popout=1&v={current_id}"
-        # Main thread, call directly
         self.browser_mgr.refresh_main(expected_url=expected)
 
-    # ---- Timer start/stop only on main thread (use stable callback refs) ----
     def _start_monitor_timer(self):
         logger.log(obs.LOG_INFO, "🕒 [TIMER] request start_monitor")
         _dispatcher.post(self._start_monitor_timer_main, label="start_monitor_timer")
@@ -914,7 +847,6 @@ class LiveChatManager:
             self._refresh_timer_active = False
             logger.log(obs.LOG_INFO, "🕒 [TIMER] refresh removed")
 
-    # ---- Share link posting ----
     def post_share_link_to_chat(self, link):
         if not hasattr(self, "_last_posted_link"):
             self._last_posted_link = None
@@ -928,11 +860,9 @@ class LiveChatManager:
         except Exception as e:
             logger.log(obs.LOG_ERROR, f"❌ [POST] error: {e}")
 
-    # ---- State control ----
     def on_stream_started(self):
         if self._streaming_active:
             return
-        # 重新启用调度器（如果之前因停止推流而停止）
         _dispatcher.start()
         self._shutdown_event.clear()
         self._streaming_active = True
@@ -941,9 +871,7 @@ class LiveChatManager:
         self._start_init_worker()
 
     def on_stream_stopped(self):
-        # 停止一切（仅依据 OBS 推流状态）
         if not self._streaming_active:
-            # 即使标志位已是 False，仍确保彻底停止
             self._shutdown_event.set()
             self._stop_all_main()
             _dispatcher.stop()
@@ -964,23 +892,17 @@ class LiveChatManager:
         with self._update_lock:
             self._update_request_in_progress = False
         self._last_posted_link = None
-        # 直接在主线程上下文中停止（此函数在 on_stream_started 中主线程调用）
         self._stop_all_main()
 
     def _stop_all_main(self):
-        # 立即停止所有计时器与工作线程（不依赖调度器）
         self._stop_init_worker()
         self._stop_monitor_timer_main()
         self._stop_update_timer_main()
         self._stop_refresh_timer_main()
 
-    # 兼容旧接口（如果在其他地方被调用）
     def _stop_all(self):
         self._stop_all_main()
 
-# -----------------------
-# OBS script interface
-# -----------------------
 _manager = LiveChatManager()
 _current_settings = None
 
@@ -1021,10 +943,8 @@ def script_load(settings):
     obs.obs_frontend_add_event_callback(on_frontend_event)
     logger.log(obs.LOG_INFO, "🚀 [LOAD] script loaded")
 
-    # start dispatcher on main
     _dispatcher.start()
 
-    # basic update, don't start timers until streaming starts
     _manager.update_config(settings)
 
     try:
@@ -1042,7 +962,6 @@ def script_unload():
 
     logger.log(obs.LOG_INFO, f"👋 [UNLOAD] unloading, quota={_manager.yt_service.total_quota_used}")
 
-    # Stop all operations
     _manager.on_stream_stopped()
 
 def on_frontend_event(event):
@@ -1057,7 +976,6 @@ def on_frontend_event(event):
 def script_save(settings):
     pass
 
-# Optional debug function for manual refresh (dispatch to main)
 def force_refresh_now():
     current_id = _manager.get_current_video_id()
     if current_id:
@@ -1067,7 +985,3 @@ def force_refresh_now():
         logger.log(obs.LOG_INFO, "🔧 [DEBUG] refresh queued")
     else:
         logger.log(obs.LOG_WARNING, "⚠️ [DEBUG] no videoId to refresh")
-
-# -----------------------
-# End of script
-# -----------------------
