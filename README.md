@@ -12,7 +12,7 @@ https://github.com/user-attachments/assets/725c0dfa-7d9b-4e5f-98f2-8cec283508a5
    - *[@尘竹-3-梦瑶](https://www.youtube.com/@尘竹-3-梦瑶/streams)*
 3. **Other wonderful OBS stuff**:
    - *[youtube-live-chat-overlay](https://github.com/EuSouGuil/youtube-live-chat-overlay)*
-4. **Products that functions similarly to mine**:
+4. **Products that functions similarly to this one**:
    - *[youtube-chat-browser-source-updater](https://github.com/jimpalompa/OBS-Studio-Plugins-Scripts-Themes)*
    - *[Twidget](https://youtu.be/GjlEzcKAVCI?si=PoIndk-xf2tETBG6)*
 
