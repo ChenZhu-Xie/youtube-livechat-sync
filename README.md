@@ -155,12 +155,13 @@ Stream data is logged in JSON Lines format:
 ### Debug Tips
 
 1. **Monitor OBS Script Log**: Check timestamped log entries for detailed operation status
-<img width="1614" height="691" alt="image" src="https://github.com/user-attachments/assets/f4e6af89-d6c7-436e-b3f4-42fc6451e732" />
 2. **Verify Channel Input**: Test different channel input formats (@handle, channel ID, full URL)
 3. **Check File Permissions**: Ensure read/write access to log directories
 4. **Network Connectivity**: Verify network access between PCs for cross-device sync
 5. **Browser Source Settings**: Confirm browser source URL updates are working correctly
 6. **API Usage Tracking**: Monitor quota usage in logs to optimize API calls
+
+<img width="1614" height="691" alt="image" src="https://github.com/user-attachments/assets/f4e6af89-d6c7-436e-b3f4-42fc6451e732" />
 
 ## Contributing
 
