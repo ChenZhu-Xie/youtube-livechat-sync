@@ -29,9 +29,7 @@ https://github.com/user-attachments/assets/725c0dfa-7d9b-4e5f-98f2-8cec283508a5
 - [API Quota Management](#api-quota-management)
 - [Log Format](#log-format)
 - [Troubleshooting](#troubleshooting)
-  - [Common Issues](#common-issues)
   - [Debug Tips](#debug-tips)
-- [Requirements](#requirements)
 - [Contributing](#contributing)
 - [License](#license)
 - [Disclaimer](#disclaimer)
@@ -154,50 +152,15 @@ Stream data is logged in JSON Lines format:
 
 ## Troubleshooting
 
-### Common Issues
-
-**❌ "HTML parsing failed, trying API fallback"**
-- Network connectivity issues or YouTube page structure changes
-- API fallback will automatically engage if available
-- Check internet connection and firewall settings
-
-**❌ "Both HTML and API methods failed"**
-- Ensure your stream is actually live on YouTube
-- Verify channel input format (handle, ID, or URL)
-- Check that chat is enabled for your stream
-
-**❌ "Browser source refresh failed"**
-- Verify browser source name matches exactly in OBS
-- Check that the browser source exists in current scene collection
-- Ensure OBS has proper permissions for source updates
-
-**❌ "Video ID update timeout"**
-- YouTube servers may be slow or unresponsive
-- Script will automatically retry with exponential backoff
-- Background updates continue without interrupting current chat
-
-**❌ "Cross-device sync not working"**
-- Verify file permissions for log directories
-- Check network connectivity between PCs
-- Ensure shared folder paths are accessible
-
-<img width="1614" height="691" alt="image" src="https://github.com/user-attachments/assets/f4e6af89-d6c7-436e-b3f4-42fc6451e732" />
-
 ### Debug Tips
 
 1. **Monitor OBS Script Log**: Check timestamped log entries for detailed operation status
+<img width="1614" height="691" alt="image" src="https://github.com/user-attachments/assets/f4e6af89-d6c7-436e-b3f4-42fc6451e732" />
 2. **Verify Channel Input**: Test different channel input formats (@handle, channel ID, full URL)
 3. **Check File Permissions**: Ensure read/write access to log directories
 4. **Network Connectivity**: Verify network access between PCs for cross-device sync
 5. **Browser Source Settings**: Confirm browser source URL updates are working correctly
 6. **API Usage Tracking**: Monitor quota usage in logs to optimize API calls
-
-## Requirements
-
-- **OBS Studio** 27.0+ with Python scripting support
-- **Python Packages**: `requests` library (usually bundled with OBS)
-- **YouTube Data API v3** key (optional - for API fallback only)
-- **Network access** for cross-device setups and YouTube connectivity
 
 ## Contributing
 
